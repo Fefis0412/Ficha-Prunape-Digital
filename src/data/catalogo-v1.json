@@ -1,0 +1,2351 @@
+{
+ "version": 1,
+ "nombre": "PRUNAPE · Formulario de Aplicación",
+ "fuente": "Ficha original escaneada, geometría extraída píxel a píxel",
+ "lienzo": {
+  "ancho": 3454,
+  "alto": 4925,
+  "margen": 318
+ },
+ "eje": {
+  "puntos": [
+   {
+    "meses": 0,
+    "x": 406
+   },
+   {
+    "meses": 2,
+    "x": 662
+   },
+   {
+    "meses": 4,
+    "x": 913
+   },
+   {
+    "meses": 6,
+    "x": 1164
+   },
+   {
+    "meses": 9,
+    "x": 1418
+   },
+   {
+    "meses": 12,
+    "x": 1670
+   },
+   {
+    "meses": 15,
+    "x": 1921
+   },
+   {
+    "meses": 18,
+    "x": 2172
+   },
+   {
+    "meses": 24,
+    "x": 2423
+   },
+   {
+    "meses": 36,
+    "x": 2674
+   },
+   {
+    "meses": 48,
+    "x": 2925
+   },
+   {
+    "meses": 60,
+    "x": 3176
+   },
+   {
+    "meses": 72,
+    "x": 3421
+   }
+  ],
+  "menores": [
+   534,
+   788,
+   1043,
+   1249,
+   1330,
+   1500,
+   1585,
+   1751,
+   1836,
+   2002,
+   2087,
+   2253,
+   2338,
+   2548,
+   2801,
+   3049,
+   3300
+  ],
+  "marco": {
+   "x0": 406,
+   "y0": 940,
+   "x1": 3424,
+   "y1": 4619
+  }
+ },
+ "areas": [
+  {
+   "id": "personal_social",
+   "nombre": "PERSONAL   SOCIAL",
+   "y0": 1951,
+   "y1": 2426
+  },
+  {
+   "id": "motor_fino",
+   "nombre": "MOTOR FINO",
+   "y0": 2593,
+   "y1": 2903
+  },
+  {
+   "id": "lenguaje",
+   "nombre": "LENGUAJE",
+   "y0": 3262,
+   "y1": 3518
+  },
+  {
+   "id": "motor_grueso",
+   "nombre": "MOTOR GRUESO",
+   "y0": 4141,
+   "y1": 4548
+  }
+ ],
+ "items": [
+  {
+   "id": "cocleo-palpebral-83-3",
+   "area": "lenguaje",
+   "etiqueta": [
+    "COCLEO PALPEBRAL",
+    "(83,3)"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 0.01,
+    "p50": null,
+    "p75": null,
+    "p90": 0.54
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 407,
+    "x1": 475,
+    "y": 3328,
+    "verde": null,
+    "div": null,
+    "texto": 482
+   },
+   "n": 1
+  },
+  {
+   "id": "sonrisa-social",
+   "area": "personal_social",
+   "etiqueta": [
+    "SONRISA SOCIAL"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 0.66,
+    "p50": null,
+    "p75": 1.38,
+    "p90": 1.82
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 491,
+    "x1": 639,
+    "y": 2201,
+    "verde": 582,
+    "div": null,
+    "texto": null
+   },
+   "n": 2
+  },
+  {
+   "id": "seguimiento-linea-media",
+   "area": "motor_fino",
+   "etiqueta": [
+    "SEGUIMIENTO",
+    "LINEA MEDIA"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 0.53,
+    "p50": null,
+    "p75": 2.14,
+    "p90": 2.42
+   },
+   "notas": {
+    "izq": null,
+    "der": "(80)",
+    "cola": null
+   },
+   "geom": {
+    "x0": 474,
+    "x1": 715,
+    "y": 2769,
+    "verde": 679,
+    "div": null,
+    "texto": null
+   },
+   "n": 3
+  },
+  {
+   "id": "sosten-cefalico",
+   "area": "motor_grueso",
+   "etiqueta": [
+    "SOSTEN CEFALICO"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 0.52,
+    "p50": null,
+    "p75": 1.48,
+    "p90": 2.46
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 473,
+    "x1": 720,
+    "y": 4458,
+    "verde": 595,
+    "div": null,
+    "texto": null
+   },
+   "n": 4
+  },
+  {
+   "id": "moro-completo-simetrico",
+   "area": "motor_grueso",
+   "etiqueta": [
+    "MORO COMPLETO",
+    "SIMETRICO"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 1.39,
+    "p50": null,
+    "p75": 2.58,
+    "p90": 2.69
+   },
+   "notas": {
+    "izq": null,
+    "der": "(80)",
+    "cola": null
+   },
+   "geom": {
+    "x0": 584,
+    "x1": 749,
+    "y": 4402,
+    "verde": 735,
+    "div": null,
+    "texto": null
+   },
+   "n": 5
+  },
+  {
+   "id": "levanta-cabeza-45",
+   "area": "motor_grueso",
+   "etiqueta": [
+    "LEVANTA CABEZA 45°"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 1.75,
+    "p50": null,
+    "p75": 2.35,
+    "p90": 2.76
+   },
+   "notas": {
+    "izq": null,
+    "der": "(85)",
+    "cola": null
+   },
+   "geom": {
+    "x0": 630,
+    "x1": 758,
+    "y": 4312,
+    "verde": 706,
+    "div": null,
+    "texto": null
+   },
+   "n": 6
+  },
+  {
+   "id": "manos-semiabiertas",
+   "area": "motor_fino",
+   "etiqueta": [
+    "MANOS SEMIABIERTAS"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 0.33,
+    "p50": null,
+    "p75": 1.98,
+    "p90": 2.88
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 448,
+    "x1": 773,
+    "y": 2691,
+    "verde": 660,
+    "div": null,
+    "texto": null
+   },
+   "n": 7
+  },
+  {
+   "id": "comunicacion-con-el-observador",
+   "area": "personal_social",
+   "etiqueta": [
+    "COMUNICACION CON",
+    "EL OBSERVADOR"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 0.58,
+    "p50": null,
+    "p75": 1.45,
+    "p90": 3.22
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 480,
+    "x1": 815,
+    "y": 2130,
+    "verde": 592,
+    "div": null,
+    "texto": null
+   },
+   "n": 8
+  },
+  {
+   "id": "posicion-en-linea-media",
+   "area": "motor_grueso",
+   "etiqueta": [
+    "POSICION EN",
+    "LINEA MEDIA"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 1.37,
+    "p50": null,
+    "p75": 2.47,
+    "p90": 3.41
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 581,
+    "x1": 839,
+    "y": 4233,
+    "verde": 721,
+    "div": null,
+    "texto": null
+   },
+   "n": 9
+  },
+  {
+   "id": "mira-su-mano",
+   "area": "motor_fino",
+   "etiqueta": [
+    "MIRA SU MANO"
+   ],
+   "tipo": "A",
+   "edad_meses": {
+    "p25": 1.8,
+    "p50": null,
+    "p75": 3.16,
+    "p90": 3.94
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 636,
+    "x1": 906,
+    "y": 2623,
+    "verde": 808,
+    "div": null,
+    "texto": null
+   },
+   "n": 10
+  },
+  {
+   "id": "palanca",
+   "area": "motor_grueso",
+   "etiqueta": [
+    "PALANCA"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 3.16,
+    "p50": null,
+    "p75": 4.18,
+    "p90": 4.8
+   },
+   "notas": {
+    "izq": null,
+    "der": "(85)",
+    "cola": null
+   },
+   "geom": {
+    "x0": 807,
+    "x1": 1014,
+    "y": 4173,
+    "verde": 936,
+    "div": null,
+    "texto": null
+   },
+   "n": 11
+  },
+  {
+   "id": "junta-las-manos",
+   "area": "motor_fino",
+   "etiqueta": [
+    "JUNTA LAS MANOS"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 1.95,
+    "p50": null,
+    "p75": 4.0,
+    "p90": 4.96
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 655,
+    "x1": 1034,
+    "y": 2556,
+    "verde": 913,
+    "div": null,
+    "texto": null
+   },
+   "n": 12
+  },
+  {
+   "id": "pasa-cubo-de-mano",
+   "area": "motor_fino",
+   "etiqueta": [
+    "PASA CUBO DE MANO"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 3.2,
+    "p50": null,
+    "p75": 4.69,
+    "p90": 5.32
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 813,
+    "x1": 1079,
+    "y": 2485,
+    "verde": 999,
+    "div": null,
+    "texto": null
+   },
+   "n": 13
+  },
+  {
+   "id": "pasa-de-posicion-dorsal-a-lateral",
+   "area": "motor_grueso",
+   "etiqueta": [
+    "PASA DE POSICION",
+    "DORSAL A LATERAL"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 3.78,
+    "p50": null,
+    "p75": 5.49,
+    "p90": 5.6
+   },
+   "notas": {
+    "izq": null,
+    "der": "(80)",
+    "cola": null
+   },
+   "geom": {
+    "x0": 886,
+    "x1": 1114,
+    "y": 4119,
+    "verde": 1100,
+    "div": null,
+    "texto": null
+   },
+   "n": 14
+  },
+  {
+   "id": "busca-con-la-mirada-a-la-madre",
+   "area": "lenguaje",
+   "etiqueta": [
+    "BUSCA CON LA",
+    "MIRADA A LA MADRE"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 4.97,
+    "p50": null,
+    "p75": 5.59,
+    "p90": 5.7
+   },
+   "notas": {
+    "izq": null,
+    "der": "(80)",
+    "cola": null
+   },
+   "geom": {
+    "x0": 1035,
+    "x1": 1126,
+    "y": 3254,
+    "verde": 1112,
+    "div": null,
+    "texto": null
+   },
+   "n": 15
+  },
+  {
+   "id": "tripode",
+   "area": "motor_grueso",
+   "etiqueta": [
+    "TRIPODE"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 3.75,
+    "p50": null,
+    "p75": 5.1,
+    "p90": 5.83
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 882,
+    "x1": 1143,
+    "y": 4032,
+    "verde": 1051,
+    "div": null,
+    "texto": null
+   },
+   "n": 16
+  },
+  {
+   "id": "actitud-frente-al-espejo",
+   "area": "personal_social",
+   "etiqueta": [
+    "ACTITUD FRENTE AL ESPEJO"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 2.54,
+    "p50": null,
+    "p75": 4.66,
+    "p90": 5.9
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 730,
+    "x1": 1151,
+    "y": 2067,
+    "verde": 996,
+    "div": null,
+    "texto": null
+   },
+   "n": 17
+  },
+  {
+   "id": "prension-cubito-palmar",
+   "area": "motor_fino",
+   "etiqueta": [
+    "PRENSION CUBITO",
+    "PALMAR"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 4.64,
+    "p50": null,
+    "p75": 6.05,
+    "p90": 6.81
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 993,
+    "x1": 1233,
+    "y": 2415,
+    "verde": 1168,
+    "div": null,
+    "texto": null
+   },
+   "n": 18
+  },
+  {
+   "id": "sentado-sin-sosten",
+   "area": "motor_grueso",
+   "etiqueta": [
+    "SENTADO SIN",
+    "SOSTEN"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 5.7,
+    "p50": null,
+    "p75": 7.07,
+    "p90": 7.69
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 1126,
+    "x1": 1307,
+    "y": 3965,
+    "verde": 1255,
+    "div": null,
+    "texto": null
+   },
+   "n": 19
+  },
+  {
+   "id": "se-resiste-a-que-le-quiten-un-juguete",
+   "area": "personal_social",
+   "etiqueta": [
+    "SE RESISTE A QUE LE QUITEN UN JUGUETE"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 2.39,
+    "p50": null,
+    "p75": 6.5,
+    "p90": 8.06
+   },
+   "notas": {
+    "izq": null,
+    "der": "(85)",
+    "cola": null
+   },
+   "geom": {
+    "x0": 711,
+    "x1": 1338,
+    "y": 1917,
+    "verde": 1206,
+    "div": null,
+    "texto": null
+   },
+   "n": 20
+  },
+  {
+   "id": "juega-a-las-escondidas",
+   "area": "personal_social",
+   "etiqueta": [
+    "JUEGA A LAS ESCONDIDAS"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 3.19,
+    "p50": 3.44,
+    "p75": 6.51,
+    "p90": 8.1
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 811,
+    "x1": 1342,
+    "y": 1984,
+    "verde": 1207,
+    "div": 843,
+    "texto": null
+   },
+   "n": 21
+  },
+  {
+   "id": "silabeo-da-da-da-ta-ta-ta",
+   "area": "lenguaje",
+   "etiqueta": [
+    "SILABEO DA-DA-DA",
+    "TA-TA-TA"
+   ],
+   "tipo": "A",
+   "edad_meses": {
+    "p25": 5.0,
+    "p50": null,
+    "p75": 7.28,
+    "p90": 8.39
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 1038,
+    "x1": 1366,
+    "y": 3189,
+    "verde": 1272,
+    "div": null,
+    "texto": null
+   },
+   "n": 22
+  },
+  {
+   "id": "sentado-alcanza-objeto",
+   "area": "motor_grueso",
+   "etiqueta": [
+    "SENTADO",
+    "ALCANZA OBJETO"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 7.42,
+    "p50": null,
+    "p75": 7.42,
+    "p90": 8.87
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 1284,
+    "x1": 1407,
+    "y": 3889,
+    "verde": 1284,
+    "div": null,
+    "texto": null
+   },
+   "n": 23
+  },
+  {
+   "id": "silabeo-pa-pa-pa-mama-ma-no-especifico",
+   "area": "lenguaje",
+   "etiqueta": [
+    "SILABEO PA-PA-PA",
+    "MAMA-MA, NO ESPECIFICO"
+   ],
+   "tipo": "A",
+   "edad_meses": {
+    "p25": 5.38,
+    "p50": 6.17,
+    "p75": 8.39,
+    "p90": 9.27
+   },
+   "notas": {
+    "izq": "(30)",
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 1086,
+    "x1": 1441,
+    "y": 3112,
+    "verde": 1366,
+    "div": 1178,
+    "texto": null
+   },
+   "n": 24
+  },
+  {
+   "id": "respuesta-al-no",
+   "area": "lenguaje",
+   "etiqueta": [
+    "RESPUESTA AL NO"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 6.19,
+    "p50": null,
+    "p75": 7.15,
+    "p90": 9.71
+   },
+   "notas": {
+    "izq": "(55)",
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 1180,
+    "x1": 1478,
+    "y": 3047,
+    "verde": 1261,
+    "div": null,
+    "texto": null
+   },
+   "n": 25
+  },
+  {
+   "id": "busca-objeto",
+   "area": "personal_social",
+   "etiqueta": [
+    "BUSCA OBJETO"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 5.99,
+    "p50": 7.02,
+    "p75": 9.12,
+    "p90": 10.63
+   },
+   "notas": {
+    "izq": "(55)",
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 1163,
+    "x1": 1555,
+    "y": 1851,
+    "verde": 1428,
+    "div": 1250,
+    "texto": null
+   },
+   "n": 26
+  },
+  {
+   "id": "logra-pararse",
+   "area": "motor_grueso",
+   "etiqueta": [
+    "LOGRA PARARSE"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 7.63,
+    "p50": null,
+    "p75": 10.5,
+    "p90": 11.1
+   },
+   "notas": {
+    "izq": null,
+    "der": "(85)",
+    "cola": null
+   },
+   "geom": {
+    "x0": 1302,
+    "x1": 1594,
+    "y": 3828,
+    "verde": 1544,
+    "div": null,
+    "texto": null
+   },
+   "n": 27
+  },
+  {
+   "id": "camina-sujeto-a-muebles",
+   "area": "motor_grueso",
+   "etiqueta": [
+    "CAMINA SUJETO A",
+    "MUEBLES"
+   ],
+   "tipo": "A",
+   "edad_meses": {
+    "p25": 7.95,
+    "p50": null,
+    "p75": 10.37,
+    "p90": 11.65
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 1329,
+    "x1": 1641,
+    "y": 3749,
+    "verde": 1533,
+    "div": null,
+    "texto": null
+   },
+   "n": 28
+  },
+  {
+   "id": "prension-pinza-superior",
+   "area": "motor_fino",
+   "etiqueta": [
+    "PRENSION PINZA SUPERIOR"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 8.48,
+    "p50": null,
+    "p75": 10.43,
+    "p90": 11.74
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 1374,
+    "x1": 1648,
+    "y": 2342,
+    "verde": 1538,
+    "div": null,
+    "texto": null
+   },
+   "n": 29
+  },
+  {
+   "id": "camina-de-la-mano",
+   "area": "motor_grueso",
+   "etiqueta": [
+    "CAMINA DE LA",
+    "MANO"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 8.98,
+    "p50": 10.07,
+    "p75": 11.17,
+    "p90": 12.32
+   },
+   "notas": {
+    "izq": "(30)",
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 1416,
+    "x1": 1697,
+    "y": 3683,
+    "verde": 1600,
+    "div": 1508,
+    "texto": null
+   },
+   "n": 30
+  },
+  {
+   "id": "camina-solo",
+   "area": "motor_grueso",
+   "etiqueta": [
+    "CAMINA SOLO"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 11.31,
+    "p50": null,
+    "p75": 13.4,
+    "p90": 14.83
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 1612,
+    "x1": 1907,
+    "y": 3614,
+    "verde": 1787,
+    "div": null,
+    "texto": null
+   },
+   "n": 31
+  },
+  {
+   "id": "se-agacha-y-se-levanta-sin-sosten",
+   "area": "motor_grueso",
+   "etiqueta": [
+    "SE AGACHA Y SE",
+    "LEVANTA SIN SOSTEN"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 12.13,
+    "p50": null,
+    "p75": 13.37,
+    "p90": 15.45
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 1681,
+    "x1": 1959,
+    "y": 3544,
+    "verde": 1785,
+    "div": null,
+    "texto": null
+   },
+   "n": 32
+  },
+  {
+   "id": "come-solo",
+   "area": "personal_social",
+   "etiqueta": [
+    "COME SOLO"
+   ],
+   "tipo": "A",
+   "edad_meses": {
+    "p25": 12.36,
+    "p50": 13.37,
+    "p75": 15.99,
+    "p90": 17.12
+   },
+   "notas": {
+    "izq": "(55)",
+    "der": "(80)",
+    "cola": null
+   },
+   "geom": {
+    "x0": 1700,
+    "x1": 2098,
+    "y": 1773,
+    "verde": 2004,
+    "div": 1785,
+    "texto": null
+   },
+   "n": 33
+  },
+  {
+   "id": "da-un-objeto",
+   "area": "personal_social",
+   "etiqueta": [
+    "DA UN OBJETO"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 7.87,
+    "p50": 9.02,
+    "p75": 12.93,
+    "p90": 17.45
+   },
+   "notas": {
+    "izq": "(55)",
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 1322,
+    "x1": 2126,
+    "y": 1707,
+    "verde": 1748,
+    "div": 1420,
+    "texto": null
+   },
+   "n": 34
+  },
+  {
+   "id": "introduce-pasa-en-botella",
+   "area": "motor_fino",
+   "etiqueta": [
+    "INTRODUCE PASA EN BOTELLA"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 10.43,
+    "p50": null,
+    "p75": 14.45,
+    "p90": 17.51
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 1538,
+    "x1": 2131,
+    "y": 2275,
+    "verde": 1875,
+    "div": null,
+    "texto": null
+   },
+   "n": 35
+  },
+  {
+   "id": "ayuda-en-tareas-del-hogar",
+   "area": "personal_social",
+   "etiqueta": [
+    "AYUDA EN TAREAS DEL HOGAR"
+   ],
+   "tipo": "A",
+   "edad_meses": {
+    "p25": 10.95,
+    "p50": null,
+    "p75": 14.83,
+    "p90": 17.73
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 1582,
+    "x1": 2149,
+    "y": 1640,
+    "verde": 1907,
+    "div": null,
+    "texto": null
+   },
+   "n": 36
+  },
+  {
+   "id": "juego-simbolico",
+   "area": "personal_social",
+   "etiqueta": [
+    "JUEGO SIMBOLICO"
+   ],
+   "tipo": "A",
+   "edad_meses": {
+    "p25": 11.32,
+    "p50": null,
+    "p75": 13.97,
+    "p90": 18.45
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 1613,
+    "x1": 2191,
+    "y": 1574,
+    "verde": 1835,
+    "div": null,
+    "texto": null
+   },
+   "n": 37
+  },
+  {
+   "id": "sube-a-una-silla-o-sillon-sin-ayuda",
+   "area": "motor_grueso",
+   "etiqueta": [
+    "SUBE A UNA SILLA O SILLON SIN AYUDA"
+   ],
+   "tipo": "A",
+   "edad_meses": {
+    "p25": 11.85,
+    "p50": null,
+    "p75": 16.14,
+    "p90": 18.53
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 1657,
+    "x1": 2194,
+    "y": 3473,
+    "verde": 2016,
+    "div": null,
+    "texto": null
+   },
+   "n": 38
+  },
+  {
+   "id": "garabatea",
+   "area": "motor_fino",
+   "etiqueta": [
+    "GARABATEA"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 10.75,
+    "p50": null,
+    "p75": 14.92,
+    "p90": 18.91
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 1565,
+    "x1": 2210,
+    "y": 2201,
+    "verde": 1914,
+    "div": null,
+    "texto": null
+   },
+   "n": 39
+  },
+  {
+   "id": "imita-tareas-del-hogar",
+   "area": "personal_social",
+   "etiqueta": [
+    "IMITA TAREAS DEL HOGAR"
+   ],
+   "tipo": "A",
+   "edad_meses": {
+    "p25": 11.1,
+    "p50": 11.75,
+    "p75": 15.42,
+    "p90": 19.22
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 1594,
+    "x1": 2223,
+    "y": 1499,
+    "verde": 1956,
+    "div": 1649,
+    "texto": null
+   },
+   "n": 40
+  },
+  {
+   "id": "vierte-pasa-de-botella",
+   "area": "motor_fino",
+   "etiqueta": [
+    "VIERTE PASA DE BOTELLA"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 9.36,
+    "p50": null,
+    "p75": 15.13,
+    "p90": 19.36
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": "M"
+   },
+   "geom": {
+    "x0": 1448,
+    "x1": 2229,
+    "y": 2130,
+    "verde": 1932,
+    "div": null,
+    "texto": null
+   },
+   "n": 41
+  },
+  {
+   "id": "papa-mama-especifico",
+   "area": "lenguaje",
+   "etiqueta": [
+    "PAPA  MAMA, ESPECIFICO"
+   ],
+   "tipo": "A",
+   "edad_meses": {
+    "p25": 10.33,
+    "p50": null,
+    "p75": 16.35,
+    "p90": 20.61
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 1530,
+    "x1": 2281,
+    "y": 3047,
+    "verde": 2034,
+    "div": null,
+    "texto": null
+   },
+   "n": 42
+  },
+  {
+   "id": "patea-pelota",
+   "area": "motor_grueso",
+   "etiqueta": [
+    "PATEA PELOTA"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 12.51,
+    "p50": null,
+    "p75": 15.29,
+    "p90": 21.27
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": "M"
+   },
+   "geom": {
+    "x0": 1713,
+    "x1": 2309,
+    "y": 3401,
+    "verde": 1945,
+    "div": null,
+    "texto": null
+   },
+   "n": 43
+  },
+  {
+   "id": "palabra-frase",
+   "area": "lenguaje",
+   "etiqueta": [
+    "PALABRA FRASE"
+   ],
+   "tipo": "A",
+   "edad_meses": {
+    "p25": 11.94,
+    "p50": 14.75,
+    "p75": 16.82,
+    "p90": 22.18
+   },
+   "notas": {
+    "izq": "(35)",
+    "der": "(85)",
+    "cola": null
+   },
+   "geom": {
+    "x0": 1665,
+    "x1": 2347,
+    "y": 2982,
+    "verde": 2073,
+    "div": 1900,
+    "texto": null
+   },
+   "n": 44
+  },
+  {
+   "id": "torre-de-4-cubos",
+   "area": "motor_fino",
+   "etiqueta": [
+    "TORRE DE 4 CUBOS"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 14.71,
+    "p50": null,
+    "p75": 19.84,
+    "p90": 23.57
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": "M"
+   },
+   "geom": {
+    "x0": 1897,
+    "x1": 2405,
+    "y": 2067,
+    "verde": 2249,
+    "div": null,
+    "texto": null
+   },
+   "n": 45
+  },
+  {
+   "id": "senala-2-figuras",
+   "area": "lenguaje",
+   "etiqueta": [
+    "SEÑALA 2 FIGURAS"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 12.1,
+    "p50": null,
+    "p75": 21.2,
+    "p90": 26.2
+   },
+   "notas": {
+    "izq": "(30)",
+    "der": null,
+    "cola": "2-4"
+   },
+   "geom": {
+    "x0": 1678,
+    "x1": 2469,
+    "y": 2909,
+    "verde": 2306,
+    "div": null,
+    "texto": null
+   },
+   "n": 46
+  },
+  {
+   "id": "nombra-2-figuras",
+   "area": "lenguaje",
+   "etiqueta": [
+    "NOMBRA 2 FIGURAS"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 15.18,
+    "p50": null,
+    "p75": 26.34,
+    "p90": 27.92
+   },
+   "notas": {
+    "izq": null,
+    "der": "(80)",
+    "cola": "2-4"
+   },
+   "geom": {
+    "x0": 1936,
+    "x1": 2505,
+    "y": 2833,
+    "verde": 2472,
+    "div": null,
+    "texto": null
+   },
+   "n": 47
+  },
+  {
+   "id": "acude-al-llamado-del-observador",
+   "area": "personal_social",
+   "etiqueta": [
+    "ACUDE AL LLAMADO DEL OBSERVADOR"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 11.1,
+    "p50": null,
+    "p75": 18.76,
+    "p90": 27.97
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 1594,
+    "x1": 2506,
+    "y": 1436,
+    "verde": 2204,
+    "div": null,
+    "texto": null
+   },
+   "n": 48
+  },
+  {
+   "id": "frases-sustantivo-y-verbo",
+   "area": "lenguaje",
+   "etiqueta": [
+    "FRASES",
+    "(SUSTANTIVO Y VERBO)"
+   ],
+   "tipo": "A",
+   "edad_meses": {
+    "p25": 19.39,
+    "p50": null,
+    "p75": 25.39,
+    "p90": 28.11
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 2230,
+    "x1": 2509,
+    "y": 2769,
+    "verde": 2452,
+    "div": null,
+    "texto": null
+   },
+   "n": 49
+  },
+  {
+   "id": "lanza-pelota-al-examinador",
+   "area": "motor_grueso",
+   "etiqueta": [
+    "LANZA PELOTA AL EXAMINADOR"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 14.56,
+    "p50": null,
+    "p75": 22.16,
+    "p90": 28.49
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 1884,
+    "x1": 2517,
+    "y": 3328,
+    "verde": 2346,
+    "div": null,
+    "texto": null
+   },
+   "n": 50
+  },
+  {
+   "id": "control-de-esfinteres-diurno",
+   "area": "personal_social",
+   "etiqueta": [
+    "CONTROL DE",
+    "ESFINTERES DIURNO"
+   ],
+   "tipo": "A",
+   "edad_meses": {
+    "p25": 21.9,
+    "p50": null,
+    "p75": 29.4,
+    "p90": 31.84
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 2335,
+    "x1": 2587,
+    "y": 1362,
+    "verde": 2536,
+    "div": null,
+    "texto": null
+   },
+   "n": 51
+  },
+  {
+   "id": "se-quita-ropa-o-zapatos",
+   "area": "personal_social",
+   "etiqueta": [
+    "SE QUITA ROPA O ZAPATOS"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 17.57,
+    "p50": 19.46,
+    "p75": 28.21,
+    "p90": 32.84
+   },
+   "notas": {
+    "izq": null,
+    "der": "(85)",
+    "cola": null
+   },
+   "geom": {
+    "x0": 2136,
+    "x1": 2608,
+    "y": 1293,
+    "verde": 2511,
+    "div": 2233,
+    "texto": null
+   },
+   "n": 52
+  },
+  {
+   "id": "salta-con-ambos-pies",
+   "area": "motor_grueso",
+   "etiqueta": [
+    "SALTA CON AMBOS PIES"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 18.91,
+    "p50": null,
+    "p75": 29.5,
+    "p90": 33.08
+   },
+   "notas": {
+    "izq": null,
+    "der": "(85)",
+    "cola": "M"
+   },
+   "geom": {
+    "x0": 2210,
+    "x1": 2613,
+    "y": 3254,
+    "verde": 2538,
+    "div": null,
+    "texto": null
+   },
+   "n": 53
+  },
+  {
+   "id": "tararea-en-presencia-de-terceros",
+   "area": "lenguaje",
+   "etiqueta": [
+    "TARAREA EN PRESENCIA",
+    "DE TERCEROS"
+   ],
+   "tipo": "A",
+   "edad_meses": {
+    "p25": 23.83,
+    "p50": null,
+    "p75": 30.6,
+    "p90": 33.37
+   },
+   "notas": {
+    "izq": null,
+    "der": "(80)",
+    "cola": null
+   },
+   "geom": {
+    "x0": 2416,
+    "x1": 2619,
+    "y": 2691,
+    "verde": 2561,
+    "div": null,
+    "texto": null
+   },
+   "n": 54
+  },
+  {
+   "id": "se-pone-ropa-o-zapatos",
+   "area": "personal_social",
+   "etiqueta": [
+    "SE PONE ROPA O ZAPATOS"
+   ],
+   "tipo": "A",
+   "edad_meses": {
+    "p25": 19.15,
+    "p50": 21.06,
+    "p75": 31.41,
+    "p90": 35.71
+   },
+   "notas": {
+    "izq": "(35)",
+    "der": "(85)",
+    "cola": null
+   },
+   "geom": {
+    "x0": 2220,
+    "x1": 2668,
+    "y": 1226,
+    "verde": 2578,
+    "div": 2300,
+    "texto": null
+   },
+   "n": 55
+  },
+  {
+   "id": "torre-de-8-cubos",
+   "area": "motor_fino",
+   "etiqueta": [
+    "TORRE DE 8 CUBOS"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 25.48,
+    "p50": null,
+    "p75": 31.12,
+    "p90": 37.29
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": "M"
+   },
+   "geom": {
+    "x0": 2454,
+    "x1": 2701,
+    "y": 1984,
+    "verde": 2572,
+    "div": null,
+    "texto": null
+   },
+   "n": 56
+  },
+  {
+   "id": "frase-completa",
+   "area": "lenguaje",
+   "etiqueta": [
+    "FRASE COMPLETA"
+   ],
+   "tipo": "A",
+   "edad_meses": {
+    "p25": 22.8,
+    "p50": 23.86,
+    "p75": 31.98,
+    "p90": 37.34
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 2373,
+    "x1": 2702,
+    "y": 2623,
+    "verde": 2590,
+    "div": 2417,
+    "texto": null
+   },
+   "n": 57
+  },
+  {
+   "id": "arma-rompecabezas",
+   "area": "personal_social",
+   "etiqueta": [
+    "ARMA ROMPECABEZAS"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 24.91,
+    "p50": 29.12,
+    "p75": 33.18,
+    "p90": 37.67
+   },
+   "notas": {
+    "izq": "(35)",
+    "der": null,
+    "cola": "M"
+   },
+   "geom": {
+    "x0": 2442,
+    "x1": 2709,
+    "y": 1147,
+    "verde": 2615,
+    "div": 2530,
+    "texto": null
+   },
+   "n": 58
+  },
+  {
+   "id": "dice-su-nombre-completo",
+   "area": "lenguaje",
+   "etiqueta": [
+    "DICE SU NOMBRE",
+    "COMPLETO"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 33.27,
+    "p50": null,
+    "p75": 33.27,
+    "p90": 42.74
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 2617,
+    "x1": 2815,
+    "y": 2556,
+    "verde": 2617,
+    "div": null,
+    "texto": null
+   },
+   "n": 59
+  },
+  {
+   "id": "imita-puente",
+   "area": "motor_fino",
+   "etiqueta": [
+    "IMITA PUENTE"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 19.05,
+    "p50": 25.48,
+    "p75": 36.62,
+    "p90": 43.7
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": "M"
+   },
+   "geom": {
+    "x0": 2216,
+    "x1": 2835,
+    "y": 1917,
+    "verde": 2687,
+    "div": 2454,
+    "texto": null
+   },
+   "n": 60
+  },
+  {
+   "id": "se-para-en-un-pie-5",
+   "area": "motor_grueso",
+   "etiqueta": [
+    "SE PARA EN UN PIE 5\""
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 23.5,
+    "p50": null,
+    "p75": 36.43,
+    "p90": 44.94
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": "M"
+   },
+   "geom": {
+    "x0": 2402,
+    "x1": 2861,
+    "y": 3189,
+    "verde": 2683,
+    "div": null,
+    "texto": null
+   },
+   "n": 61
+  },
+  {
+   "id": "salto-amplio",
+   "area": "motor_grueso",
+   "etiqueta": [
+    "SALTO AMPLIO"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 25.05,
+    "p50": null,
+    "p75": 36.14,
+    "p90": 45.23
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 2445,
+    "x1": 2867,
+    "y": 3112,
+    "verde": 2677,
+    "div": null,
+    "texto": null
+   },
+   "n": 62
+  },
+  {
+   "id": "aparea-colores",
+   "area": "personal_social",
+   "etiqueta": [
+    "APAREA COLORES"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 26.1,
+    "p50": null,
+    "p75": 43.12,
+    "p90": 45.56
+   },
+   "notas": {
+    "izq": null,
+    "der": "(80)",
+    "cola": "1-4"
+   },
+   "geom": {
+    "x0": 2467,
+    "x1": 2874,
+    "y": 1083,
+    "verde": 2823,
+    "div": null,
+    "texto": null
+   },
+   "n": 63
+  },
+  {
+   "id": "corrige-torre",
+   "area": "motor_fino",
+   "etiqueta": [
+    "CORRIGE TORRE"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 19.31,
+    "p50": null,
+    "p75": 37.2,
+    "p90": 45.56
+   },
+   "notas": {
+    "izq": null,
+    "der": "(85)",
+    "cola": null
+   },
+   "geom": {
+    "x0": 2227,
+    "x1": 2874,
+    "y": 1851,
+    "verde": 2699,
+    "div": null,
+    "texto": null
+   },
+   "n": 64
+  },
+  {
+   "id": "analogias-opuestas",
+   "area": "lenguaje",
+   "etiqueta": [
+    "ANALOGIAS OPUESTAS"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 29.55,
+    "p50": null,
+    "p75": 42.36,
+    "p90": 50.58
+   },
+   "notas": {
+    "izq": "(35)",
+    "der": null,
+    "cola": "2-3"
+   },
+   "geom": {
+    "x0": 2539,
+    "x1": 2979,
+    "y": 2485,
+    "verde": 2807,
+    "div": null,
+    "texto": null
+   },
+   "n": 65
+  },
+  {
+   "id": "comprende-preposiciones",
+   "area": "lenguaje",
+   "etiqueta": [
+    "COMPRENDE PREPOSICIONES"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 24.29,
+    "p50": null,
+    "p75": 40.64,
+    "p90": 53.12
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": "3-4"
+   },
+   "geom": {
+    "x0": 2429,
+    "x1": 3032,
+    "y": 2415,
+    "verde": 2771,
+    "div": null,
+    "texto": null
+   },
+   "n": 66
+  },
+  {
+   "id": "cumple-2-indicaciones-consecutivas",
+   "area": "lenguaje",
+   "etiqueta": [
+    "CUMPLE 2 INDICACIONES CONSECUTIVAS"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 25.48,
+    "p50": 28.59,
+    "p75": 43.12,
+    "p90": 55.03
+   },
+   "notas": {
+    "izq": "(35)",
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 2454,
+    "x1": 3072,
+    "y": 2342,
+    "verde": 2823,
+    "div": 2519,
+    "texto": null
+   },
+   "n": 67
+  },
+  {
+   "id": "salta-en-un-pie",
+   "area": "motor_grueso",
+   "etiqueta": [
+    "SALTA EN UN PIE"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 34.37,
+    "p50": null,
+    "p75": 46.61,
+    "p90": 55.55
+   },
+   "notas": {
+    "izq": "(35)",
+    "der": null,
+    "cola": "M"
+   },
+   "geom": {
+    "x0": 2640,
+    "x1": 3083,
+    "y": 3047,
+    "verde": 2896,
+    "div": null,
+    "texto": null
+   },
+   "n": 68
+  },
+  {
+   "id": "reconoce-3-colores",
+   "area": "lenguaje",
+   "etiqueta": [
+    "RECONOCE 3 COLORES"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 31.89,
+    "p50": 40.02,
+    "p75": 53.12,
+    "p90": 56.08
+   },
+   "notas": {
+    "izq": null,
+    "der": "(80)",
+    "cola": null
+   },
+   "geom": {
+    "x0": 2588,
+    "x1": 3094,
+    "y": 2275,
+    "verde": 3032,
+    "div": 2758,
+    "texto": null
+   },
+   "n": 69
+  },
+  {
+   "id": "dibuja-persona-3-partes",
+   "area": "motor_fino",
+   "etiqueta": [
+    "DIBUJA PERSONA (3 PARTES)"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 36.1,
+    "p50": null,
+    "p75": 48.81,
+    "p90": 57.51
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 2676,
+    "x1": 3124,
+    "y": 1773,
+    "verde": 2942,
+    "div": null,
+    "texto": null
+   },
+   "n": 70
+  },
+  {
+   "id": "dobla-un-papel-en-diagonal",
+   "area": "motor_fino",
+   "etiqueta": [
+    "DOBLA UN PAPEL EN DIAGONAL"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 38.29,
+    "p50": 41.55,
+    "p75": 53.07,
+    "p90": 58.04
+   },
+   "notas": {
+    "izq": "(30)",
+    "der": "(85)",
+    "cola": "M"
+   },
+   "geom": {
+    "x0": 2722,
+    "x1": 3135,
+    "y": 1707,
+    "verde": 3031,
+    "div": 2790,
+    "texto": null
+   },
+   "n": 71
+  },
+  {
+   "id": "uso-de-2-objetos",
+   "area": "lenguaje",
+   "etiqueta": [
+    "USO DE 2 OBJETOS"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 30.41,
+    "p50": null,
+    "p75": 44.99,
+    "p90": 58.61
+   },
+   "notas": {
+    "izq": "(35)",
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 2557,
+    "x1": 3147,
+    "y": 2201,
+    "verde": 2862,
+    "div": null,
+    "texto": null
+   },
+   "n": 72
+  },
+  {
+   "id": "copia-cruz",
+   "area": "motor_fino",
+   "etiqueta": [
+    "COPIA CRUZ"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 42.69,
+    "p50": null,
+    "p75": 50.15,
+    "p90": 59.0
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 2814,
+    "x1": 3155,
+    "y": 1640,
+    "verde": 2970,
+    "div": null,
+    "texto": null
+   },
+   "n": 73
+  },
+  {
+   "id": "camina-talon-punta",
+   "area": "motor_grueso",
+   "etiqueta": [
+    "CAMINA TALON PUNTA"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 35.24,
+    "p50": null,
+    "p75": 52.45,
+    "p90": 60.54
+   },
+   "notas": {
+    "izq": "(30)",
+    "der": null,
+    "cola": "M"
+   },
+   "geom": {
+    "x0": 2658,
+    "x1": 3187,
+    "y": 2982,
+    "verde": 3018,
+    "div": null,
+    "texto": null
+   },
+   "n": 74
+  },
+  {
+   "id": "sabe-por-que-es-de-dia-o-de-noche",
+   "area": "lenguaje",
+   "etiqueta": [
+    "SABE POR QUE ES DE DIA O DE NOCHE"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 37.24,
+    "p50": 41.55,
+    "p75": 55.94,
+    "p90": 64.75
+   },
+   "notas": {
+    "izq": "(55)",
+    "der": "(85)",
+    "cola": null
+   },
+   "geom": {
+    "x0": 2700,
+    "x1": 3273,
+    "y": 2130,
+    "verde": 3091,
+    "div": 2790,
+    "texto": null
+   },
+   "n": 75
+  },
+  {
+   "id": "dibuja-persona-6-partes",
+   "area": "motor_fino",
+   "etiqueta": [
+    "DIBUJA PERSONA (6 PARTES)"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 42.5,
+    "p50": null,
+    "p75": 58.23,
+    "p90": 68.38
+   },
+   "notas": {
+    "izq": null,
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 2810,
+    "x1": 3347,
+    "y": 1574,
+    "verde": 3139,
+    "div": null,
+    "texto": null
+   },
+   "n": 76
+  },
+  {
+   "id": "junta-dibujos-semejantes",
+   "area": "personal_social",
+   "etiqueta": [
+    "JUNTA DIBUJOS SEMEJANTES"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 43.12,
+    "p50": 48.0,
+    "p75": 57.04,
+    "p90": 68.87
+   },
+   "notas": {
+    "izq": "(55)",
+    "der": null,
+    "cola": null
+   },
+   "geom": {
+    "x0": 2823,
+    "x1": 3357,
+    "y": 1006,
+    "verde": 3114,
+    "div": 2925,
+    "texto": null
+   },
+   "n": 77
+  },
+  {
+   "id": "copia-un-triangulo",
+   "area": "motor_fino",
+   "etiqueta": [
+    "COPIA UN",
+    "TRIANGULO"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 57.08,
+    "p50": 59.95,
+    "p75": 66.12,
+    "p90": 69.8
+   },
+   "notas": {
+    "izq": "(55)",
+    "der": "(85)",
+    "cola": null
+   },
+   "geom": {
+    "x0": 3115,
+    "x1": 3376,
+    "y": 1499,
+    "verde": 3301,
+    "div": 3175,
+    "texto": null
+   },
+   "n": 78
+  },
+  {
+   "id": "retrocede-talon-punta",
+   "area": "motor_grueso",
+   "etiqueta": [
+    "RETROCEDE TALON PUNTA"
+   ],
+   "tipo": "B",
+   "edad_meses": {
+    "p25": 48.33,
+    "p50": null,
+    "p75": 62.69,
+    "p90": 71.22
+   },
+   "notas": {
+    "izq": "(30)",
+    "der": null,
+    "cola": "M"
+   },
+   "geom": {
+    "x0": 2932,
+    "x1": 3405,
+    "y": 2909,
+    "verde": 3231,
+    "div": null,
+    "texto": null
+   },
+   "n": 79
+  }
+ ]
+}

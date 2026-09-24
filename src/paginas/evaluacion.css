@@ -1,0 +1,80 @@
+.eval { min-height: 100%; display: flex; flex-direction: column; background: var(--fondo); }
+
+.eval-barra {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 16px;
+  background: var(--superficie);
+  border-bottom: 1px solid var(--borde);
+  position: sticky; top: 0; z-index: 30;
+}
+.eval-titulo { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+.eval-titulo strong { font-size: 14px; }
+
+.eval-cuerpo {
+  display: grid;
+  grid-template-columns: 1fr 296px;
+  gap: 16px;
+  padding: 16px;
+  align-items: start;
+}
+
+.eval-ficha {
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--r);
+  box-shadow: var(--sombra-1);
+  padding: 10px;
+  display: grid;
+  justify-items: center;
+  overflow: hidden;
+}
+
+.eval-panel {
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--r);
+  box-shadow: var(--sombra-1);
+  padding: 16px;
+  display: flex; flex-direction: column; gap: 13px;
+  position: sticky; top: 68px;
+  max-height: calc(100vh - 84px);
+  overflow: auto;
+}
+
+.eval-cifras { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.eval-cifra {
+  background: var(--superficie-2);
+  border: 1px solid var(--borde);
+  border-radius: var(--r-sm);
+  padding: 9px 8px;
+  text-align: center;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.eval-cifra strong { font-size: 21px; line-height: 1; font-variant-numeric: tabular-nums; }
+.eval-cifra span { font-size: 10.5px; color: var(--texto-3); line-height: 1.25; }
+
+.eval-veredicto {
+  padding: 10px 12px;
+  border-radius: var(--r-sm);
+  font-weight: 600;
+  font-size: 13px;
+  text-align: center;
+  background: #eef1f3;
+  color: var(--texto-2);
+}
+.eval-veredicto.pasa { background: var(--ok-suave); color: var(--ok); }
+.eval-veredicto.derivar { background: var(--error-suave); color: var(--error); }
+
+@media (max-width: 1080px) {
+  .eval-cuerpo { grid-template-columns: 1fr; }
+  .eval-panel { position: static; max-height: none; }
+}
+
+@media print {
+  .no-imprimir { display: none !important; }
+  .eval, .eval-cuerpo, .eval-ficha {
+    display: block; padding: 0; margin: 0;
+    border: 0; box-shadow: none; background: #fff; overflow: visible;
+  }
+  @page { size: A4 portrait; margin: 6mm; }
+}

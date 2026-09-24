@@ -1,43 +1,162 @@
-# Ficha PRUNAPE Digital
+# PRUNAPE Digital
 
-Versión digital e interactiva del **Formulario de Aplicación** de la Prueba Nacional de Pesquisa (PRUNAPE), maquetada a partir de la ficha original en papel.
+Aplicación web para aplicar y archivar la **Prueba Nacional de Pesquisa (PRUNAPE)**
+en centros de neurodesarrollo. Pensada para varios centros, cada uno con su
+equipo, sus pacientes y su identidad visual.
 
-Es una única página HTML sin dependencias: se abre con doble clic, funciona sin internet y no envía datos a ningún servidor.
-
-## Uso
-
-Abrí `index.html` en cualquier navegador moderno (Chrome, Edge, Firefox).
+---
 
 ## Qué hace
 
-- **Datos del paciente**: examinador, nombre, N° de historia clínica, edad gestacional, fecha de nacimiento y fecha de la pesquisa.
-- **Edad postnatal y edad corregida calculadas automáticamente**. La corrección por prematurez se aplica sola cuando la edad gestacional es menor a 37 semanas.
-- **Línea de edad**: una guía roja vertical se dibuja sobre el gráfico en la edad corregida del niño, para ver de un vistazo qué ítems corresponde evaluar.
-- **Marcado de ítems**: clic sobre cualquier ítem para ciclar entre
-  `Pasa` (✓ verde) → `No pasa` (✗ rojo) → sin marcar.
-- **Contadores**: ítems fallados tipo A (los marcados con ✱ en la ficha) y tipo B, más el total de ítems pasados.
-- **Guardado automático** en el navegador (`localStorage`), así no se pierde nada al cerrar la pestaña.
-- **Impresión / PDF**: el botón escala la ficha a una única hoja A4 vertical.
+**Para la terapeuta**
+- Registro de pacientes con edad gestacional y corrección por prematurez.
+- La ficha del PRUNAPE reproducida fiel al papel: los 79 ítems con sus
+  percentilos, la línea de edad corregida marcada sobre el gráfico.
+- Marcado por clic (pasa / no pasa / sin marcar), con guardado automático y
+  continuidad si se corta internet.
+- Cierre firmado de la evaluación, impresión a una hoja A4.
+- Línea de tiempo por paciente y comparación de la evolución entre pesquisas.
 
-## Cómo se construyó
+**Para el backoffice (superadmin)**
+- Alta y suspensión de centros.
+- Personalización por centro: logo y colores, con vista previa.
+- Asignación de usuarios a centros y roles.
+- Auditoría navegable con el antes/después de cada cambio.
+- Acceso de soporte con motivo, duración y aviso visible.
 
-La ficha original era un PDF escaneado, sin capa de texto. La geometría se extrajo analizando la imagen píxel a píxel:
+---
 
-- Marco del gráfico: `x 406–3423`, `y 940–4618` (en px de la imagen original de 3454×4925).
-- Eje de edad: 13 marcas mayores (0, 2, 4, 6, 9, 12, 15, 18, 24 meses y 3, 4, 5, 6 años) con separación regular de 251 px entre ellas.
-- 79 ítems, cada uno con su rectángulo, el tramo verde (percentilo 75 → 90) y la posición de su etiqueta.
+## Cómo está construido
 
-La página reproduce ese mismo sistema de coordenadas y lo escala de forma responsiva, así que las proporciones son idénticas a la ficha impresa.
+| Capa | Tecnología | Por qué |
+|---|---|---|
+| Interfaz | React + Vite + TypeScript | estático, sin servidor propio |
+| Datos y sesión | Supabase (Postgres + Auth + RLS) | el aislamiento vive en la base |
+| Alojamiento | Cloudflare Pages | plan gratuito que permite uso comercial |
+| Respaldo | GitHub Actions | volcado cifrado todas las noches |
+
+### Las cuatro reglas que sostienen el diseño
+
+1. **El aislamiento se aplica en la base, no en la pantalla.** Las políticas de
+   Row Level Security deciden qué filas existen para cada usuario. Un error en
+   una consulta no puede filtrar datos de otro centro.
+2. **Nada se borra.** Los pacientes se archivan; las evaluaciones cerradas son
+   inmutables; un borrador sin firmar se marca como descartado, no se elimina.
+3. **La auditoría la escriben triggers de Postgres**, no la aplicación. No se
+   puede saltear ni alterar desde el navegador.
+4. **Lo calculado se guarda.** Cada evaluación registra con qué versión del
+   catálogo se aplicó y qué edad corregida tenía el niño ese día, así un cambio
+   futuro de reglas no altera la historia clínica.
+
+### Quién ve qué
+
+| | Su paciente | Otros del centro | Otros centros |
+|---|---|---|---|
+| Terapeuta | sí | no | no |
+| Admin del centro | sí | sí | no |
+| Superadmin | solo con acceso de soporte abierto y auditado | | |
+
+---
+
+## Puesta en marcha
+
+### Requisitos
+Node 20+, Docker (solo para desarrollo local).
+
+### Desarrollo
+
+```bash
+npm install
+npx supabase start          # levanta Postgres, Auth y la API
+node scripts/sembrar.mjs    # centros, usuarios y pacientes de prueba
+npm run dev                 # http://localhost:5173
+```
+
+`supabase start` imprime las claves; copialas a `.env.local`
+(ver `.env.example`).
+
+Cuentas que crea la siembra:
+
+| Correo | Contraseña | Rol |
+|---|---|---|
+| super@prunape.bo | Super1234! | superadmin |
+| ana@lapaz.bo | Ana12345! | admin del centro |
+| tomas@lapaz.bo | Tomas1234! | terapeuta |
+| rita@lapaz.bo | Rita1234! | terapeuta (mismo centro) |
+| berta@scz.bo | Berta1234! | terapeuta (otro centro) |
+
+### Producción
+
+1. Crear un proyecto en [supabase.com](https://supabase.com) (plan gratuito).
+2. Aplicar el esquema: `npx supabase db push --db-url <URL>`.
+3. Crear el primer superadmin desde Authentication → Add user, y marcarlo con
+   `update perfiles set es_superadmin = true where email = '…'`.
+4. En Cloudflare Pages: conectar el repositorio, build `npm run build`,
+   carpeta `dist`, y cargar `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY`.
+5. Cargar los secretos del respaldo (ver `.github/workflows/respaldo.yml`).
+
+La **clave de servicio** (`service_role`) nunca va al navegador ni al
+repositorio: solo se usa desde `scripts/sembrar.mjs` en tu máquina.
+
+---
+
+## Pruebas
+
+```bash
+npm test                    # 37 pruebas de la lógica clínica
+bash scripts/probar-db.sh   # 27 afirmaciones de aislamiento contra Postgres
+npm run e2e                 # 42 pruebas de navegador
+```
+
+Las tres capas cubren cosas distintas:
+
+- **Unitarias** — cálculo de edad corregida, criterio de fracaso, coherencia del
+  catálogo (79 ítems, reparto 18/19/19/23 por área, percentilos crecientes).
+- **Base de datos** — que un terapeuta no vea pacientes de su compañera, que
+  otro centro esté aislado, que una evaluación cerrada no se pueda editar, que
+  la auditoría no se pueda alterar.
+- **Navegador** — los flujos completos, incluidos los casos malos: credenciales
+  incorrectas, fechas futuras, duplicados, historia clínica repetida, intentos
+  de abrir por URL el paciente de otro.
+
+---
 
 ## Estructura
 
 ```
-index.html      la ficha completa (HTML + CSS + JS, todo junto)
-origen/         material de referencia: la ficha original escaneada
+src/
+  components/FichaPrunape.tsx   la ficha; reproduce el formulario impreso
+  data/catalogo-v1.json         los 79 ítems: geometría, área, tipo, percentilos
+  lib/edad.ts                   edad postnatal y corregida
+  lib/resultado.ts              criterio de fracaso
+  paginas/                      pantallas del centro
+  paginas/admin/                backoffice
+supabase/
+  migrations/                   esquema, RLS y triggers
+  pruebas/                      pruebas de aislamiento en SQL
+legacy/                         la ficha original en un solo HTML
+origen/                         el formulario escaneado del que se extrajo todo
 ```
 
-## Nota
+### Sobre el catálogo
 
-El criterio de fracaso que muestra la barra superior (≥1 ítem tipo A o ≥2 tipo B) es una ayuda visual. **La interpretación del resultado debe hacerse siempre contra el manual del PRUNAPE**; esta herramienta no reemplaza el criterio profesional.
+La ficha original era un PDF escaneado sin capa de texto. La geometría de los
+79 ítems se extrajo analizando la imagen píxel a píxel: marco del gráfico, las
+13 marcas del eje de edad y, para cada ítem, su rectángulo y su tramo de
+percentilos. De ahí salen los percentilos en meses que usa la aplicación.
 
-El formulario PRUNAPE es un instrumento de la Sociedad Argentina de Pediatría. Este repositorio es una digitalización de uso interno.
+El área de cada ítem (personal-social, motor fino, lenguaje, motor grueso) **no
+se puede deducir de la posición**, porque las cuatro comparten filas en el
+gráfico. Se asignaron según la clasificación estándar del PRUNAPE y el reparto
+resultante (18/19/19/23) coincide con el del instrumento.
+
+---
+
+## Aviso
+
+El criterio de fracaso que muestra la aplicación (≥1 ítem tipo A o ≥2 tipo B)
+es una ayuda de cálculo. **La interpretación del resultado es del profesional y
+debe contrastarse con el manual del PRUNAPE.** Esta herramienta no reemplaza el
+criterio clínico.
+
+El formulario PRUNAPE es un instrumento de la Sociedad Argentina de Pediatría.

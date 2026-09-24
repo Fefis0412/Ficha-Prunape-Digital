@@ -1,0 +1,67 @@
+name: Respaldo nocturno
+
+# El plan gratuito de Supabase no garantiza copias de seguridad, y acá hay
+# historias clínicas de niños. Este workflow saca un volcado cifrado todas
+# las noches y lo guarda como artefacto del repositorio.
+#
+# Secretos que hay que cargar en Settings → Secrets → Actions:
+#   SUPABASE_DB_URL   postgresql://postgres:CLAVE@db.PROYECTO.supabase.co:5432/postgres
+#   RESPALDO_CLAVE    frase larga para cifrar el volcado (guardala aparte:
+#                     sin ella el respaldo no se puede restaurar)
+
+on:
+  schedule:
+    - cron: '0 7 * * *' # 03:00 en Bolivia (UTC-4)
+  workflow_dispatch: # permite lanzarlo a mano
+
+jobs:
+  respaldo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Instalar cliente de Postgres
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y postgresql-client-16
+
+      - name: Volcar la base
+        env:
+          PGURL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          if [ -z "$PGURL" ]; then
+            echo "Falta el secreto SUPABASE_DB_URL" >&2
+            exit 1
+          fi
+          pg_dump "$PGURL" --no-owner --no-privileges --format=custom \
+            --file=respaldo.dump
+          ls -lh respaldo.dump
+
+      - name: Cifrar
+        env:
+          CLAVE: ${{ secrets.RESPALDO_CLAVE }}
+        run: |
+          if [ -z "$CLAVE" ]; then
+            echo "Falta el secreto RESPALDO_CLAVE" >&2
+            exit 1
+          fi
+          gpg --batch --yes --symmetric --cipher-algo AES256 \
+              --passphrase "$CLAVE" --output respaldo.dump.gpg respaldo.dump
+          rm -f respaldo.dump
+
+      - name: Guardar
+        uses: actions/upload-artifact@v4
+        with:
+          name: respaldo-${{ github.run_id }}
+          path: respaldo.dump.gpg
+          retention-days: 30
+
+      - name: Resumen
+        run: |
+          echo "### Respaldo completado" >> $GITHUB_STEP_SUMMARY
+          echo "Archivo cifrado con AES256, se conserva 30 días." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Para restaurar:" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo 'gpg --decrypt respaldo.dump.gpg > respaldo.dump' >> $GITHUB_STEP_SUMMARY
+          echo 'pg_restore -d "$PGURL" --no-owner --clean respaldo.dump' >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY

@@ -1,3 +1,19 @@
+node_modules/
+dist/
+.env
+.env.local
+.env.*.local
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+.playwright/
+
+# Supabase local
+supabase/.branches/
+supabase/.temp/
+
 # Sistema operativo
 Thumbs.db
 Desktop.ini
@@ -12,3 +28,10 @@ Desktop.ini
 *.tmp
 *.bak
 ~$*
+
+# Herramientas de agentes (instaladas por npx skills / impeccable)
+.agents/
+.claude/
+.codex/
+skills-lock.json
+tsconfig.tsbuildinfo

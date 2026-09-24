@@ -1,0 +1,211 @@
+/* La ficha reproduce el formulario impreso. Las medidas están en las
+   coordenadas del escaneo original (1 unidad = 1 px de la imagen) y toda
+   la hoja se escala con transform. No tocar los números sin volver a
+   comparar contra origen/. */
+
+.ficha-envoltorio {
+  overflow: hidden;
+  background: #fff;
+  position: relative;
+}
+
+.ficha-hoja {
+  position: relative;
+  background: #fff;
+  transform-origin: top left;
+}
+
+.ficha-capa {
+  position: absolute;
+  top: 0;
+  width: 3454px;
+  height: 4925px;
+}
+
+.ficha-capa * {
+  position: absolute;
+}
+
+.ficha-txt {
+  white-space: pre;
+  line-height: 1;
+  color: #111;
+}
+.ficha-txt.b {
+  font-weight: bold;
+}
+
+.ficha-regla {
+  height: 13px;
+  background: #111;
+}
+
+.ficha-subrayado {
+  height: 5px;
+  background-image: repeating-linear-gradient(to right, #111 0 20px, transparent 20px 38px);
+}
+
+.ficha-dato {
+  font-size: 44px;
+  color: #00307a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.1;
+}
+
+.ficha-marco {
+  border: 3px solid #111;
+  border-top-width: 6px;
+}
+
+.ficha-tick {
+  background: #111;
+  width: 3px;
+}
+
+.ficha-axnum {
+  font-size: 44px;
+  text-align: center;
+  color: #111;
+}
+
+.ficha-area {
+  font-size: 46px;
+  letter-spacing: 6px;
+  transform-origin: center center;
+  transform: rotate(-90deg);
+  text-align: center;
+  white-space: nowrap;
+  color: #111;
+}
+
+/* ── ítems ─────────────────────────────────────────────────────────────── */
+
+.ficha-barra {
+  border: 2px solid #4a4a4a;
+  background: #fff;
+  height: 60px;
+  cursor: pointer;
+  transition: box-shadow 120ms ease, border-color 120ms ease;
+}
+.ficha-barra.ficha-fija {
+  cursor: default;
+}
+.ficha-barra:not(.ficha-fija):hover {
+  border-color: #111;
+  box-shadow: 0 0 0 4px rgba(47, 111, 78, 0.18);
+}
+.ficha-barra:focus-visible {
+  outline: 5px solid #2f6f4e;
+  outline-offset: 3px;
+}
+
+.ficha-verde {
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: #a8c0a4;
+}
+
+.ficha-div {
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #4a4a4a;
+}
+
+.ficha-lbl {
+  font-size: 30px;
+  line-height: 30px;
+  white-space: nowrap;
+  transform-origin: left center;
+  transform: translateY(-50%) scaleX(0.82);
+  top: 50%;
+  letter-spacing: 0.2px;
+  color: #111;
+  pointer-events: none;
+}
+.ficha-linea {
+  position: static;
+}
+
+.ficha-nota {
+  font-size: 29px;
+  top: 50%;
+  transform: translateY(-50%) scaleX(0.85);
+  transform-origin: left center;
+  white-space: nowrap;
+  color: #111;
+  pointer-events: none;
+}
+
+.ficha-cola {
+  font-size: 30px;
+  top: 50%;
+  transform: translate(-50%, -50%) scaleX(0.85);
+  white-space: nowrap;
+  color: #111;
+  pointer-events: none;
+}
+
+.ficha-barra.pasa {
+  border-color: #1a7f37;
+  box-shadow: inset 0 0 0 3px rgba(26, 127, 55, 0.35);
+}
+.ficha-barra.no_pasa {
+  border-color: #c62828;
+  box-shadow: inset 0 0 0 3px rgba(198, 40, 40, 0.3);
+}
+
+.ficha-marca {
+  font-size: 52px;
+  font-weight: bold;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 10px;
+  pointer-events: none;
+}
+.ficha-barra.pasa .ficha-marca {
+  color: #1a7f37;
+}
+.ficha-barra.no_pasa .ficha-marca {
+  color: #c62828;
+}
+
+/* ── línea de edad ─────────────────────────────────────────────────────── */
+
+.ficha-edad-linea {
+  width: 0;
+  border-left: 5px dashed #d0021b;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.ficha-edad-rotulo {
+  color: #d0021b;
+  font-size: 38px;
+  font-weight: bold;
+  z-index: 6;
+  background: #fff;
+  padding: 2px 8px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* ── impresión ─────────────────────────────────────────────────────────── */
+
+@media print {
+  .ficha-envoltorio {
+    width: auto !important;
+    height: auto !important;
+    overflow: visible;
+  }
+  .ficha-hoja {
+    transform: scale(var(--escala-impresion, 0.189)) !important;
+  }
+  .ficha-barra:hover {
+    box-shadow: none;
+    border-color: #4a4a4a;
+  }
+}
