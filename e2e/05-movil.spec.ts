@@ -39,7 +39,7 @@ test.describe('Celular · estructura', () => {
 
   test('los campos miden 16px o más para que iOS no haga zoom', async ({ page }) => {
     await page.goto('/entrar')
-    const tam = await page.getByLabel('Correo').evaluate(
+    const tam = await page.getByLabel('Usuario').evaluate(
       (e) => parseFloat(getComputedStyle(e).fontSize),
     )
     expect(tam).toBeGreaterThanOrEqual(16)

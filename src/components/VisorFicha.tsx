@@ -73,9 +73,11 @@ export function VisorFicha({ alto = '100%', ...props }: VisorFichaProps) {
     })
   }, [encuadrar])
 
+  /** Escala a la que la hoja entra completa, a lo ancho y a lo alto. */
   const escalaDeAjuste = useCallback(() => {
     const c = caja()
-    return c ? Math.max(MIN, c.width / medidas.ancho) : MIN
+    if (!c) return MIN
+    return Math.max(MIN, Math.min(c.width / medidas.ancho, c.height / medidas.alto))
   }, [medidas])
 
   const ajustar = useCallback(() => {
@@ -83,7 +85,10 @@ export function VisorFicha({ alto = '100%', ...props }: VisorFichaProps) {
     if (!c) return
     const e = escalaDeAjuste()
     setEscala(e)
-    setPos({ x: (c.width - medidas.ancho * e) / 2, y: 0 })
+    setPos({
+      x: (c.width - medidas.ancho * e) / 2,
+      y: (c.height - medidas.alto * e) / 2,
+    })
   }, [escalaDeAjuste, medidas])
 
   /** Centra la vista en la línea de edad, que es donde están los ítems que importan. */
@@ -95,21 +100,20 @@ export function VisorFicha({ alto = '100%', ...props }: VisorFichaProps) {
     setPos(encuadrar({ x: c.width / 2 - x * e, y: c.height / 2 - y * e }, e))
   }, [escala, props.mesesCorregidos, medidas, encuadrar])
 
-  /* Al abrir: un zoom en el que se lee, centrado en la edad del niño. */
+  /* Al abrir se ve la ficha entera, como el papel sobre la mesa. Desde ahí
+     la terapeuta acerca donde le interesa. */
   useEffect(() => {
     if (listo) return
     const c = caja()
-    if (!c || !c.width) return
-    const e = Math.min(0.42, Math.max(escalaDeAjuste(), 0.3))
+    if (!c || !c.width || !c.height) return
+    const e = Math.max(MIN, Math.min(c.width / medidas.ancho, c.height / medidas.alto))
     setEscala(e)
-    if (props.mesesCorregidos != null) {
-      const x = xDeMeses(props.mesesCorregidos)
-      setPos(encuadrar({ x: c.width / 2 - x * e, y: c.height * 0.3 - medidas.alto * 0.42 * e }, e))
-    } else {
-      setPos({ x: (c.width - medidas.ancho * e) / 2, y: 0 })
-    }
+    setPos({
+      x: (c.width - medidas.ancho * e) / 2,
+      y: (c.height - medidas.alto * e) / 2,
+    })
     setListo(true)
-  }, [listo, medidas, escalaDeAjuste, encuadrar, props.mesesCorregidos])
+  }, [listo, medidas])
 
   /* ── gestos ────────────────────────────────────────────────────────────── */
 

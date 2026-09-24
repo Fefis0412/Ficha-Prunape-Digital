@@ -90,13 +90,23 @@ la serie 553xx por ese motivo.
 
 Cuentas que crea la siembra:
 
-| Correo | Contraseña | Rol |
+| Usuario | Contraseña | Rol |
 |---|---|---|
+| fefis | fefis123 | terapeuta, con un paciente y sin pesquisas |
 | super@prunape.bo | Super1234! | superadmin |
 | ana@lapaz.bo | Ana12345! | admin del centro |
 | tomas@lapaz.bo | Tomas1234! | terapeuta |
 | rita@lapaz.bo | Rita1234! | terapeuta (mismo centro) |
 | berta@scz.bo | Berta1234! | terapeuta (otro centro) |
+
+Se puede entrar con un **usuario suelto** o con un correo. Supabase identifica
+siempre por correo, así que a quien no tiene uno se le arma uno interno
+(`usuario@prunape.local`) que nunca ve. Para dar de alta a alguien así:
+
+```bash
+node scripts/crear-usuario.mjs fefis fefis123 "Paciente de Prueba"
+node scripts/crear-usuario.mjs coordinacion Clave123 --admin
+```
 
 ### Probarlo desde el celular
 
@@ -147,7 +157,7 @@ repositorio: solo se usa desde `scripts/sembrar.mjs` en tu máquina.
 ```bash
 npm test                    # 37 pruebas de la lógica clínica
 bash scripts/probar-db.sh   # 27 afirmaciones de aislamiento contra Postgres
-npm run e2e                 # 53 pruebas de navegador
+npm run e2e                 # 55 pruebas de navegador
 
 npx playwright test --project=escritorio   # solo escritorio (Chromium)
 npx playwright test --project=celular      # solo celular (WebKit, perfil iPhone)

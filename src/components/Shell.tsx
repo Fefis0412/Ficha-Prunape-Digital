@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useSesion } from '@/estado/sesion'
 import { supabase } from '@/lib/supabase'
+import { aNombreVisible } from '@/lib/usuario'
 import type { AccesoSoporte } from '@/lib/tipos'
 import './shell.css'
 
@@ -99,7 +100,7 @@ function BarraUsuario() {
         <div className="usuario-menu tarjeta">
           <div className="usuario-menu-cab">
             <strong>{perfil?.nombre}</strong>
-            <span className="min tenue">{perfil?.email}</span>
+            <span className="min tenue">{aNombreVisible(perfil?.email)}</span>
             <span className="min tenue">{rol}</span>
           </div>
           <button

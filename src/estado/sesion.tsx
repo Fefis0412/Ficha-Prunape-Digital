@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import type { Session } from '@supabase/supabase-js'
 import { supabase, mensajeError } from '@/lib/supabase'
+import { aCorreo } from '@/lib/usuario'
 import { aplicarBranding, BRANDING_POR_DEFECTO } from '@/lib/branding'
 import type { Centro, Perfil } from '@/lib/tipos'
 
@@ -58,8 +59,12 @@ export function ProveedorSesion({ children }: { children: React.ReactNode }) {
     return () => { vivo = false; sub.subscription.unsubscribe() }
   }, [cargarPerfil])
 
-  const entrar = useCallback(async (email: string, clave: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password: clave })
+  /** Acepta un usuario suelto ('fefis') o un correo completo. */
+  const entrar = useCallback(async (usuarioOCorreo: string, clave: string) => {
+    const { error } = await supabase.auth.signInWithPassword({
+      email: aCorreo(usuarioOCorreo),
+      password: clave,
+    })
     if (error) throw new Error(mensajeError(error))
   }, [])
 

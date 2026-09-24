@@ -45,7 +45,7 @@ export function mensajeError(e: unknown): string {
     return 'Los registros clínicos no se borran. Se archivan.'
   if (msg.includes('Failed to fetch') || msg.includes('NetworkError'))
     return 'Sin conexión con el servidor. Revisá tu internet.'
-  if (msg.includes('Invalid login credentials')) return 'Correo o contraseña incorrectos.'
+  if (msg.includes('Invalid login credentials')) return 'Usuario o contraseña incorrectos.'
   if (msg.includes('Email not confirmed')) return 'Falta confirmar el correo de esta cuenta.'
 
   return msg || 'Ocurrió un error inesperado.'

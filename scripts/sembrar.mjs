@@ -81,6 +81,11 @@ async function main() {
   const berta = await cuenta('berta@scz.bo', 'Berta1234!')
   await perfil(berta, 'Berta Áñez', 'berta@scz.bo', scz.id, 'terapeuta')
 
+  // Usuario sin correo: Supabase identifica por correo, así que se le arma
+  // uno interno con un dominio reservado. Quien entra escribe sólo 'fefis'.
+  const fefis = await cuenta('fefis@prunape.local', 'fefis123')
+  await perfil(fefis, 'Fefis', 'fefis@prunape.local', lapaz.id, 'terapeuta')
+
   // pacientes: uno de Tomás, uno de Rita, uno del otro centro
   const pacientes = [
     { centro_id: lapaz.id, nombre: 'Mateo', apellido: 'Rojas',
@@ -92,6 +97,9 @@ async function main() {
     { centro_id: scz.id, nombre: 'Luis', apellido: 'Choque',
       fecha_nacimiento: '2022-06-01', edad_gestacional_sem: null,
       historia_clinica: 'HC-1103', sexo: 'M', responsable_id: berta },
+    { centro_id: lapaz.id, nombre: 'Paciente de', apellido: 'Prueba',
+      fecha_nacimiento: '2024-03-10', edad_gestacional_sem: null,
+      historia_clinica: 'HC-PRUEBA', sexo: null, responsable_id: fefis },
   ]
   // El índice de historia clínica es parcial (ignora archivados), así que
   // upsert no puede usarlo: miramos primero cuáles ya están.
@@ -122,6 +130,7 @@ async function main() {
   tomas@lapaz.bo    Tomas1234!   terapeuta · ve a Rojas
   rita@lapaz.bo     Rita1234!    terapeuta · ve a Mamani
   berta@scz.bo      Berta1234!   terapeuta · otro centro
+  fefis             fefis123     terapeuta · usuario sin correo
 `)
 }
 

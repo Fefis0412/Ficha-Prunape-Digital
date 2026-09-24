@@ -6,12 +6,14 @@ export const CUENTAS = {
   tomas:  { email: 'tomas@lapaz.bo',   clave: 'Tomas1234!', nombre: 'Tomás Quispe' },
   rita:   { email: 'rita@lapaz.bo',    clave: 'Rita1234!',  nombre: 'Rita Flores' },
   berta:  { email: 'berta@scz.bo',     clave: 'Berta1234!', nombre: 'Berta Áñez' },
+  // entra con usuario suelto, sin correo
+  fefis:  { email: 'fefis',            clave: 'fefis123',   nombre: 'Fefis' },
 } as const
 
 export async function entrar(page: Page, quien: keyof typeof CUENTAS) {
   const c = CUENTAS[quien]
   await page.goto('/entrar')
-  await page.getByLabel('Correo').fill(c.email)
+  await page.getByLabel('Usuario').fill(c.email)
   await page.getByLabel('Contraseña', { exact: true }).fill(c.clave)
   await page.getByRole('button', { name: 'Ingresar' }).click()
   await expect(page).toHaveURL(/\/(app|admin)/, { timeout: 20_000 })

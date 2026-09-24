@@ -4,9 +4,22 @@ import { CUENTAS, entrar, limpiarSesion, salir } from './ayudas'
 test.beforeEach(async ({ page }) => { await limpiarSesion(page) })
 
 test.describe('Acceso', () => {
+  test('se entra con un usuario suelto, sin correo', async ({ page }) => {
+    await entrar(page, 'fefis')
+    await expect(page).toHaveURL(/\/app/)
+    await expect(page.getByRole('heading', { name: /Hola, Fefis/ })).toBeVisible()
+  })
+
+  test('el usuario que ve la terapeuta no es un correo interno', async ({ page }) => {
+    await entrar(page, 'fefis')
+    await page.getByRole('button', { name: 'Fefis' }).first().click()
+    await expect(page.getByText('fefis', { exact: true })).toBeVisible()
+    await expect(page.getByText(/prunape\.local/)).toHaveCount(0)
+  })
+
   test('rechaza credenciales incorrectas sin dejar entrar', async ({ page }) => {
     await page.goto('/entrar')
-    await page.getByLabel('Correo').fill('ana@lapaz.bo')
+    await page.getByLabel('Usuario').fill('ana@lapaz.bo')
     await page.getByLabel('Contraseña', { exact: true }).fill('clave-equivocada')
     await page.getByRole('button', { name: 'Ingresar' }).click()
 
@@ -22,7 +35,7 @@ test.describe('Acceso', () => {
 
   test('rechaza una cuenta que no existe', async ({ page }) => {
     await page.goto('/entrar')
-    await page.getByLabel('Correo').fill('nadie@ninguna-parte.bo')
+    await page.getByLabel('Usuario').fill('nadie@ninguna-parte.bo')
     await page.getByLabel('Contraseña', { exact: true }).fill('Loquesea123!')
     await page.getByRole('button', { name: 'Ingresar' }).click()
     await expect(page.getByRole('alert')).toBeVisible()
