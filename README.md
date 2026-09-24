@@ -96,6 +96,35 @@ Cuentas que crea la siembra:
 | rita@lapaz.bo | Rita1234! | terapeuta (mismo centro) |
 | berta@scz.bo | Berta1234! | terapeuta (otro centro) |
 
+### Probarlo desde el celular
+
+El celular tiene que llegar a la PC por la red local, así que hay que apuntar
+la aplicación a la IP de la PC en vez de a `127.0.0.1` (que en el celular sería
+el propio celular).
+
+```bash
+# 1. averiguá la IP de la PC en la red
+ipconfig                     # Windows   → "Dirección IPv4"
+ip addr | grep 'inet '       # Linux/Mac
+
+# 2. ponela en .env.local
+VITE_SUPABASE_URL=http://TU-IP:55321
+
+# 3. levantá el servidor (vite ya escucha en toda la red)
+npm run dev
+```
+
+Después, desde el celular en **la misma red wifi**, abrí `http://TU-IP:5173`.
+
+Si no carga, casi siempre es el **firewall de Windows**: si la red está
+clasificada como *Pública*, bloquea las conexiones entrantes. Se destraba con
+una sola orden, en una PowerShell **como administrador**:
+
+```powershell
+New-NetFirewallRule -DisplayName "PRUNAPE dev" -Direction Inbound `
+  -Protocol TCP -LocalPort 5173,55321 -Action Allow -Profile Any
+```
+
 ### Producción
 
 1. Crear un proyecto en [supabase.com](https://supabase.com) (plan gratuito).
