@@ -1,0 +1,129 @@
+.visor {
+  position: relative;
+  width: 100%;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--r);
+  box-shadow: var(--sombra-1);
+  overflow: hidden;
+}
+
+.visor-marco {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  /* el visor maneja los dos ejes: sin esto el navegador se lleva el gesto
+     y la página entera se mueve mientras se intenta recorrer la ficha */
+  touch-action: none;
+  cursor: grab;
+  background:
+    repeating-linear-gradient(45deg, #fafbfb 0 10px, #f4f6f7 10px 20px);
+}
+.visor-marco:active { cursor: grabbing; }
+
+.visor-lienzo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+/* la hoja adentro del visor no lleva sombra ni recorte propios */
+.visor-lienzo .ficha-envoltorio {
+  overflow: visible;
+  box-shadow: 0 2px 18px rgba(16, 24, 32, 0.14);
+}
+
+/* ── mandos ──────────────────────────────────────────────────────────────── */
+
+.visor-mandos {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  z-index: 5;
+}
+
+.visor-btn,
+.visor-zoom {
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid var(--borde-fuerte);
+  border-radius: 99px;
+  box-shadow: var(--sombra-2);
+  backdrop-filter: blur(6px);
+}
+
+.visor-btn {
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--texto);
+  height: 40px;
+  padding: 0 15px;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.visor-btn:active { transform: scale(0.96); }
+.visor-edad { color: #b3261e; border-color: #f0c9c6; }
+
+.visor-zoom {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  height: 40px;
+}
+.visor-zoom button {
+  font: inherit;
+  font-size: 21px;
+  line-height: 1;
+  font-weight: 500;
+  width: 42px;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--texto);
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.visor-zoom button:active:not(:disabled) { background: #eceff1; }
+.visor-zoom button:disabled { opacity: 0.35; cursor: not-allowed; }
+.visor-zoom span {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-2);
+  min-width: 42px;
+  text-align: center;
+  border-left: 1px solid var(--borde);
+  border-right: 1px solid var(--borde);
+  line-height: 40px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .visor-btn:hover { background: #fff; border-color: var(--texto-3); }
+  .visor-zoom button:hover:not(:disabled) { background: #f2f4f5; }
+}
+
+/* En celular los mandos van abajo a la izquierda para no chocar con el
+   resumen fijo, y la ficha aprovecha todo el ancho. */
+@media (max-width: 900px) {
+  .visor { border-radius: var(--r); }
+  .visor-mandos { left: 8px; right: 8px; bottom: 8px; justify-content: space-between; gap: 6px; }
+  .visor-btn { height: 42px; padding: 0 13px; font-size: 12.5px; }
+  .visor-zoom { height: 42px; }
+  .visor-zoom button { width: 44px; }
+}
+
+@media print {
+  .visor { border: 0; box-shadow: none; overflow: visible; height: auto !important; }
+  .visor-marco { position: static; overflow: visible; background: none; }
+  .visor-lienzo { position: static; transform: none !important; }
+  .visor-lienzo .ficha-envoltorio { box-shadow: none; }
+  .visor-mandos { display: none; }
+}

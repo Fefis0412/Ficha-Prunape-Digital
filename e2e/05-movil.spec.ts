@@ -64,7 +64,93 @@ test.describe('Celular · estructura', () => {
 })
 
 test.describe('Celular · aplicar la pesquisa en modo lista', () => {
-  test('arranca en lista, marca, filtra y muestra el resumen fijo', async ({ page }) => {
+  test('arranca en la ficha, con zoom y controles a la vista', async ({ page }) => {
+    await entrar(page, 'tomas')
+    await page.goto('/app/pacientes')
+    await page.getByText('Rojas, Mateo').first().click()
+    const nueva = page.getByRole('button', { name: '+ Nueva pesquisa' })
+    if (await nueva.count()) {
+      await nueva.click()
+      await page.getByRole('button', { name: 'Empezar' }).click()
+    } else {
+      await page.getByRole('link', { name: 'Continuar' }).first().click()
+    }
+    await expect(page).toHaveURL(/\/app\/evaluacion\//, { timeout: 15_000 })
+
+    // la ficha es la vista por defecto, dentro del visor con zoom
+    await expect(page.locator('.visor')).toBeVisible({ timeout: 10_000 })
+    await expect(page.locator('.ficha-barra[data-item]')).toHaveCount(79)
+
+    // arranca a un zoom en el que se lee, no en el de "ver todo"
+    const zoom = () => page.locator('.visor-zoom span').innerText()
+      .then((t) => parseInt(t, 10))
+    expect(await zoom()).toBeGreaterThanOrEqual(25)
+
+    // los controles no pueden quedar bajo el resumen fijo
+    const mandos = (await page.locator('.visor-mandos').boundingBox())!
+    const panel = (await page.locator('.eval-panel').boundingBox())!
+    expect(mandos.y + mandos.height).toBeLessThanOrEqual(panel.y + 2)
+
+    // acercar y alejar
+    const inicial = await zoom()
+    await page.locator('.visor-zoom button[aria-label="Acercar"]').click()
+    await expect.poll(zoom).toBeGreaterThan(inicial)
+    await page.getByRole('button', { name: 'Ver todo' }).click()
+    await expect.poll(zoom).toBeLessThan(inicial)
+  })
+
+  test('tocar marca el ítem y arrastrar solo mueve la ficha', async ({ page }) => {
+    await entrar(page, 'tomas')
+    await page.goto('/app/pacientes')
+    await page.getByText('Rojas, Mateo').first().click()
+    const nueva = page.getByRole('button', { name: '+ Nueva pesquisa' })
+    if (await nueva.count()) {
+      await nueva.click()
+      await page.getByRole('button', { name: 'Empezar' }).click()
+    } else {
+      await page.getByRole('link', { name: 'Continuar' }).first().click()
+    }
+    await expect(page).toHaveURL(/\/app\/evaluacion\//, { timeout: 15_000 })
+    await expect(page.locator('.visor')).toBeVisible({ timeout: 10_000 })
+
+    // una barra que caiga entera dentro del visor
+    const marco = (await page.locator('.visor-marco').boundingBox())!
+    const barras = page.locator('.ficha-barra[data-item]')
+    let idx = -1
+    for (let i = 0; i < (await barras.count()); i++) {
+      const b = await barras.nth(i).boundingBox()
+      if (b && b.x > marco.x + 15 && b.x + b.width < marco.x + marco.width - 15 &&
+          b.y > marco.y + 15 && b.y + b.height < marco.y + marco.height - 70) { idx = i; break }
+    }
+    expect(idx, 'ninguna barra visible dentro del visor').toBeGreaterThanOrEqual(0)
+    const barra = barras.nth(idx)
+
+    // El borrador puede venir con marcas de antes: se lleva a un punto
+    // conocido antes de comprobar el ciclo.
+    for (let i = 0; i < 3 && (await barra.getAttribute('data-marca')) !== ''; i++) {
+      await barra.click()
+      await page.waitForTimeout(200)
+    }
+    await expect(barra).toHaveAttribute('data-marca', '')
+
+    // tocar cicla la marca y confirma cuál se marcó
+    await barra.click()
+    await expect(barra).toHaveAttribute('data-marca', 'pasa')
+    await expect(page.locator('.eval-aviso-marca')).toBeVisible()
+    await barra.click()
+    await expect(barra).toHaveAttribute('data-marca', 'no_pasa')
+
+    // arrastrar mueve la hoja pero NO cambia la marca
+    const b = (await barra.boundingBox())!
+    await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2)
+    await page.mouse.down()
+    await page.mouse.move(b.x + b.width / 2 - 130, b.y + b.height / 2 - 50, { steps: 14 })
+    await page.mouse.up()
+    await page.waitForTimeout(400)
+    await expect(barra).toHaveAttribute('data-marca', 'no_pasa')
+  })
+
+  test('se puede pasar a la lista y marcar ahí', async ({ page }) => {
     await entrar(page, 'tomas')
     await page.goto('/app/pacientes')
     await page.getByRole('button', { name: '+ Nuevo paciente' }).click()
@@ -78,9 +164,8 @@ test.describe('Celular · aplicar la pesquisa en modo lista', () => {
     await page.getByRole('button', { name: 'Empezar' }).click()
     await expect(page).toHaveURL(/\/app\/evaluacion\//, { timeout: 15_000 })
 
-    // en pantalla angosta la vista por defecto es la lista, no el gráfico
+    await page.getByRole('button', { name: 'Lista' }).click()
     await expect(page.locator('.lista')).toBeVisible()
-    await expect(page.locator('.ficha-hoja')).toHaveCount(0)
 
     const filas = page.locator('.lista-fila')
     await expect(filas.first()).toBeVisible({ timeout: 10_000 })
@@ -116,7 +201,7 @@ test.describe('Celular · aplicar la pesquisa en modo lista', () => {
     await expect(page.getByRole('button', { name: 'Cerrar y firmar' })).toBeVisible()
   })
 
-  test('se puede pasar al gráfico y volver', async ({ page }) => {
+  test('se puede volver al gráfico desde la lista', async ({ page }) => {
     await entrar(page, 'tomas')
     await page.goto('/app/pacientes')
     await page.getByText('Rojas, Mateo').first().click()
@@ -130,13 +215,13 @@ test.describe('Celular · aplicar la pesquisa en modo lista', () => {
     }
     await expect(page).toHaveURL(/\/app\/evaluacion\//, { timeout: 15_000 })
 
-    await page.getByRole('button', { name: 'Ficha' }).click()
-    await expect(page.locator('.ficha-hoja')).toBeVisible()
-    // el gráfico se recorre dentro de su caja, sin empujar la página
-    expect(await page.evaluate(() => document.documentElement.scrollWidth))
-      .toBeLessThanOrEqual(await page.evaluate(() => document.documentElement.clientWidth))
-
     await page.getByRole('button', { name: 'Lista' }).click()
     await expect(page.locator('.lista')).toBeVisible()
+
+    await page.getByRole('button', { name: 'Ficha' }).click()
+    await expect(page.locator('.visor')).toBeVisible()
+    // el gráfico se recorre dentro del visor, sin empujar la página
+    expect(await page.evaluate(() => document.documentElement.scrollWidth))
+      .toBeLessThanOrEqual(await page.evaluate(() => document.documentElement.clientWidth))
   })
 })

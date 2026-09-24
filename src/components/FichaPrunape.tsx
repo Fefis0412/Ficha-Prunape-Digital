@@ -94,6 +94,11 @@ export interface FichaPrunapeProps {
   onToggle?: (itemId: string, siguiente: Marca | null) => void
   /** Ancho máximo en pantalla. En impresión se ignora. */
   anchoMaximo?: number
+  /** Si se pasa, manda esta escala y se desactiva el ajuste automático.
+   *  Lo usa el visor con zoom del celular. */
+  escalaFija?: number | null
+  /** Avisa las medidas de la hoja ya dispuesta, para quien maneje el zoom. */
+  onMedidas?: (m: { ancho: number; alto: number }) => void
 }
 
 const SIGUIENTE: Record<string, Marca | null> = { '': 'pasa', pasa: 'no_pasa', no_pasa: null }
@@ -106,6 +111,8 @@ export function FichaPrunape({
   soloLectura = false,
   onToggle,
   anchoMaximo = 1700,
+  escalaFija = null,
+  onMedidas,
 }: FichaPrunapeProps) {
   const disposicion = useMemo(() => disponer(catalogo), [catalogo])
   const marco = catalogo.eje.marco
@@ -122,6 +129,11 @@ export function FichaPrunape({
   const [escala, setEscala] = useState(0.4)
 
   useLayoutEffect(() => {
+    onMedidas?.({ ancho: anchoHoja, alto: altoHoja })
+  }, [anchoHoja, altoHoja, onMedidas])
+
+  useLayoutEffect(() => {
+    if (escalaFija != null) return
     const ajustar = () => {
       const vw = document.documentElement.clientWidth
       const disponible = contenedor.current?.parentElement?.clientWidth ?? vw
@@ -131,7 +143,9 @@ export function FichaPrunape({
     ajustar()
     window.addEventListener('resize', ajustar)
     return () => window.removeEventListener('resize', ajustar)
-  }, [anchoHoja, anchoMaximo])
+  }, [anchoHoja, anchoMaximo, escalaFija])
+
+  const escalaUsada = escalaFija ?? escala
 
   const lineaEdadX = mesesCorregidos != null ? xDeMeses(mesesCorregidos, catalogo) : null
 
@@ -144,11 +158,11 @@ export function FichaPrunape({
     <div
       className="ficha-envoltorio"
       ref={contenedor}
-      style={{ width: anchoHoja * escala, height: altoHoja * escala }}
+      style={{ width: anchoHoja * escalaUsada, height: altoHoja * escalaUsada }}
     >
       <div
         className="ficha-hoja"
-        style={{ width: anchoHoja, height: altoHoja, transform: `scale(${escala})` }}
+        style={{ width: anchoHoja, height: altoHoja, transform: `scale(${escalaUsada})` }}
       >
         <div className="ficha-capa" style={{ left: corrimiento }}>
           <Cabecera datos={cabecera} />

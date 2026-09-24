@@ -5,6 +5,7 @@ import {
   cerrarEvaluacion, descartarBorrador, guardarBorrador, obtenerEvaluacion,
 } from '@/datos/consultas'
 import { FichaPrunape, useImprimir, type DatosCabecera } from '@/components/FichaPrunape'
+import { VisorFicha } from '@/components/VisorFicha'
 import { ListaItems } from '@/components/ListaItems'
 import { useEsAngosta } from '@/lib/pantalla'
 import { Aviso, Cargando, Insignia, Modal, fechaCorta } from '@/components/ui'
@@ -12,6 +13,7 @@ import { calcularResultado, type Resultado } from '@/lib/resultado'
 import { descomponer, formatoLargo } from '@/lib/edad'
 import { DIAS_POR_MES } from '@/lib/edad'
 import { nombreCompleto, type Evaluacion as Eval, type Paciente, type Perfil } from '@/lib/tipos'
+import { catalogo } from '@/lib/catalogo'
 import type { Marca, Respuestas } from '@/lib/catalogo'
 import './evaluacion.css'
 
@@ -37,11 +39,46 @@ export default function Evaluacion() {
   const temporizador = useRef<ReturnType<typeof setTimeout> | null>(null)
   const sucio = useRef(false)
 
-  /* En pantalla angosta la lista es el modo de trabajo y el gráfico la vista
-     de referencia; en pantalla ancha, al revés. */
+  /* La ficha es el instrumento que las terapeutas conocen, así que manda en
+     las dos pantallas. La lista queda como alternativa para marcar de corrido. */
   const angosta = useEsAngosta()
   const [modo, setModo] = useState<'lista' | 'ficha' | null>(null)
-  const vista = modo ?? (angosta ? 'lista' : 'ficha')
+  const vista = modo ?? 'ficha'
+
+  /* Al marcar sobre la ficha con zoom, un aviso confirma en qué ítem cayó el
+     dedo: con la hoja alejada las barras son chicas y es fácil dudar. */
+  const [aviso, setAviso] = useState<{ texto: string; marca: Marca | null } | null>(null)
+  const avisoTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  /* El visor tiene que ocupar exactamente lo que queda entre la cabecera y el
+     resumen fijo. Estimarlo con un número deja los controles de zoom tapados,
+     así que se mide de verdad y se recalcula si algo cambia de alto. */
+  const refCabecera = useRef<HTMLElement>(null)
+  const refPanel = useRef<HTMLElement>(null)
+  const [altoVisor, setAltoVisor] = useState(420)
+
+  // Ojo con las dependencias: mientras la evaluación carga, la pantalla
+  // muestra "Cargando" y las referencias todavía no existen. Hay que volver a
+  // medir cuando aparece el contenido real.
+  useEffect(() => {
+    if (!angosta || !ev) return
+    const medir = () => {
+      const cab = refCabecera.current?.offsetHeight ?? 0
+      const pan = refPanel.current?.offsetHeight ?? 0
+      setAltoVisor(Math.max(260, window.innerHeight - cab - pan - 22))
+    }
+    medir()
+    const ro = new ResizeObserver(medir)
+    if (refCabecera.current) ro.observe(refCabecera.current)
+    if (refPanel.current) ro.observe(refPanel.current)
+    window.addEventListener('resize', medir)
+    window.addEventListener('orientationchange', medir)
+    return () => {
+      ro.disconnect()
+      window.removeEventListener('resize', medir)
+      window.removeEventListener('orientationchange', medir)
+    }
+  }, [angosta, vista, ev])
 
   useImprimir(3799, 4925)
 
@@ -96,6 +133,12 @@ export default function Evaluacion() {
   }, [ev])
 
   const marcar = (itemId: string, siguiente: Marca | null) => {
+    const item = catalogo.items.find((i) => i.id === itemId)
+    if (item) {
+      setAviso({ texto: item.etiqueta.join(' '), marca: siguiente })
+      if (avisoTimer.current) clearTimeout(avisoTimer.current)
+      avisoTimer.current = setTimeout(() => setAviso(null), 1800)
+    }
     setRespuestas((prev) => {
       const r = { ...prev }
       if (siguiente === null) delete r[itemId]
@@ -165,7 +208,7 @@ export default function Evaluacion() {
 
   return (
     <div className="eval">
-      <header className="eval-barra no-imprimir">
+      <header className="eval-barra no-imprimir" ref={refCabecera}>
         <Link className="btn btn-fantasma" to={`/app/pacientes/${p.id}`}>‹ Volver</Link>
         <div className="eval-titulo">
           <strong>{nombreCompleto(p)}</strong>
@@ -180,18 +223,18 @@ export default function Evaluacion() {
           : <EstadoAutoguardado estado={guardado} enLinea={enLinea} />}
         <div className="eval-modo" role="group" aria-label="Vista">
           <button
-            className={vista === 'lista' ? 'activo' : ''}
-            onClick={() => setModo('lista')}
-            aria-pressed={vista === 'lista'}
-          >
-            Lista
-          </button>
-          <button
             className={vista === 'ficha' ? 'activo' : ''}
             onClick={() => setModo('ficha')}
             aria-pressed={vista === 'ficha'}
           >
             Ficha
+          </button>
+          <button
+            className={vista === 'lista' ? 'activo' : ''}
+            onClick={() => setModo('lista')}
+            aria-pressed={vista === 'lista'}
+          >
+            Lista
           </button>
         </div>
         <button className="btn eval-imprimir" onClick={() => window.print()}>Imprimir / PDF</button>
@@ -209,23 +252,24 @@ export default function Evaluacion() {
       <div className="eval-cuerpo">
         <div className={vista === 'ficha' ? 'eval-ficha' : 'eval-lista'}>
           {vista === 'ficha' ? (
-            <>
-              {angosta && (
-                <p className="min tenue eval-pista no-imprimir">
-                  Deslizá para recorrer la ficha. Para marcar cómodo, usá la vista Lista.
-                </p>
-              )}
-              <div className="eval-ficha-desplaza">
-                <FichaPrunape
-                  respuestas={respuestas}
-                  mesesCorregidos={mesesCorregidos}
-                  cabecera={cabecera}
-                  soloLectura={cerrada}
-                  onToggle={marcar}
-                  anchoMaximo={angosta ? 1500 : 1700}
-                />
-              </div>
-            </>
+            angosta ? (
+              <VisorFicha
+                respuestas={respuestas}
+                mesesCorregidos={mesesCorregidos}
+                cabecera={cabecera}
+                soloLectura={cerrada}
+                onToggle={marcar}
+                alto={altoVisor}
+              />
+            ) : (
+              <FichaPrunape
+                respuestas={respuestas}
+                mesesCorregidos={mesesCorregidos}
+                cabecera={cabecera}
+                soloLectura={cerrada}
+                onToggle={marcar}
+              />
+            )
           ) : (
             <ListaItems
               respuestas={respuestas}
@@ -271,7 +315,7 @@ export default function Evaluacion() {
           </div>
         )}
 
-        <aside className={`eval-panel no-imprimir${angosta ? ' compacto' : ''}`}>
+        <aside className={`eval-panel no-imprimir${angosta ? ' compacto' : ''}`} ref={refPanel}>
           {!angosta && <h2>Resumen</h2>}
 
           <div className="eval-cifras">
@@ -338,6 +382,14 @@ export default function Evaluacion() {
           )}
         </aside>
       </div>
+
+      {aviso && (
+        <div className={`eval-aviso-marca no-imprimir${aviso.marca ? ' ' + aviso.marca : ''}`} role="status">
+          <b>{aviso.marca === 'pasa' ? '✓' : aviso.marca === 'no_pasa' ? '✗' : '—'}</b>
+          <span>{aviso.texto}</span>
+          <em>{aviso.marca === 'pasa' ? 'Pasa' : aviso.marca === 'no_pasa' ? 'No pasa' : 'Sin marcar'}</em>
+        </div>
+      )}
 
       {confirmarCierre && (
         <Modal titulo="Cerrar la evaluación" onCerrar={() => setConfirmarCierre(false)} ancho={470}>

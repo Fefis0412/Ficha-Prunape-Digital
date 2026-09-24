@@ -10,9 +10,11 @@ equipo, sus pacientes y su identidad visual.
 
 **Para la terapeuta** — pensado para usarse desde el celular
 - Registro de pacientes con edad gestacional y corrección por prematurez.
-- Dos modos de aplicar la pesquisa: **lista** (el modo de trabajo en celular,
-  con botones grandes y filtro por área y por edad) y **ficha** (el gráfico
-  igual al papel, para consultar e imprimir).
+- Dos modos de aplicar la pesquisa. La **ficha** es el modo principal en las
+  dos pantallas: en celular va dentro de un visor con zoom, donde se pellizca
+  para acercar, se arrastra para recorrer y se toca una barra para marcarla.
+  La **lista** queda como alternativa para marcar de corrido, con filtro por
+  área y por edad.
 - La ficha del PRUNAPE reproducida fiel al papel: los 79 ítems con sus
   percentilos, la línea de edad corregida marcada sobre el gráfico.
 - Marcado por clic (pasa / no pasa / sin marcar), con guardado automático y
@@ -145,7 +147,7 @@ repositorio: solo se usa desde `scripts/sembrar.mjs` en tu máquina.
 ```bash
 npm test                    # 37 pruebas de la lógica clínica
 bash scripts/probar-db.sh   # 27 afirmaciones de aislamiento contra Postgres
-npm run e2e                 # 49 pruebas de navegador
+npm run e2e                 # 51 pruebas de navegador
 
 npx playwright test --project=escritorio   # solo escritorio (Chromium)
 npx playwright test --project=celular      # solo celular (WebKit, perfil iPhone)
@@ -179,7 +181,8 @@ Las tres capas cubren cosas distintas:
 ```
 src/
   components/FichaPrunape.tsx   la ficha; reproduce el formulario impreso
-  components/ListaItems.tsx     los mismos ítems como lista, para el celular
+  components/VisorFicha.tsx     zoom y desplazamiento de la ficha en celular
+  components/ListaItems.tsx     los mismos ítems como lista, alternativa
   data/catalogo-v1.json         los 79 ítems: geometría, área, tipo, percentilos
   lib/edad.ts                   edad postnatal y corregida
   lib/resultado.ts              criterio de fracaso
