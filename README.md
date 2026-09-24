@@ -67,9 +67,10 @@ Node 20+, Docker (solo para desarrollo local).
 
 ```bash
 npm install
-npx supabase start          # levanta Postgres, Auth y la API
-node scripts/sembrar.mjs    # centros, usuarios y pacientes de prueba
-npm run dev                 # http://localhost:5173
+npx supabase start            # levanta Postgres, Auth y la API
+node scripts/sembrar.mjs      # centros, usuarios y pacientes de prueba
+node scripts/sembrar-demo.mjs # historial clínico para ver la evolución
+npm run dev                   # http://localhost:5173
 ```
 
 `supabase start` imprime las claves; copialas a `.env.local`

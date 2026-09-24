@@ -34,22 +34,26 @@ export default function Comparar() {
       .catch((e) => setError(e instanceof Error ? e.message : 'No se pudo cargar.'))
   }, [id])
 
-  const dejaronDeFallar = useMemo(() => {
-    if (!evs || evs.length < 2) return []
-    const primera = evs[0].respuestas ?? {}
+  /* Comparar la primera contra la última se pierde lo que falló en el medio,
+     que suele ser justo el motivo de la derivación. Se mira si el ítem falló
+     en ALGUNA pesquisa previa y cómo está en la última. */
+  const { dejaronDeFallar, aparecieron } = useMemo(() => {
+    const vacio = { dejaronDeFallar: [] as string[], aparecieron: [] as string[] }
+    if (!evs || evs.length < 2) return vacio
+    const previas = evs.slice(0, -1).map((e) => e.respuestas ?? {})
     const ultima = evs[evs.length - 1].respuestas ?? {}
-    return catalogo.items
-      .filter((i) => primera[i.id] === 'no_pasa' && ultima[i.id] === 'pasa')
-      .map((i) => i.etiqueta.join(' '))
-  }, [evs])
 
-  const aparecieron = useMemo(() => {
-    if (!evs || evs.length < 2) return []
-    const primera = evs[0].respuestas ?? {}
-    const ultima = evs[evs.length - 1].respuestas ?? {}
-    return catalogo.items
-      .filter((i) => primera[i.id] === 'pasa' && ultima[i.id] === 'no_pasa')
-      .map((i) => i.etiqueta.join(' '))
+    const recuperados: string[] = []
+    const nuevos: string[] = []
+    for (const item of catalogo.items) {
+      const fallabaAntes = previas.some((r) => r[item.id] === 'no_pasa')
+      const pasabaAntes = previas.some((r) => r[item.id] === 'pasa')
+      const ahora = ultima[item.id]
+      const texto = item.etiqueta.join(' ')
+      if (fallabaAntes && ahora === 'pasa') recuperados.push(texto)
+      else if (pasabaAntes && !fallabaAntes && ahora === 'no_pasa') nuevos.push(texto)
+    }
+    return { dejaronDeFallar: recuperados, aparecieron: nuevos }
   }, [evs])
 
   if (error) return <Aviso>{error}</Aviso>
@@ -125,10 +129,13 @@ export default function Comparar() {
 
       <div className="fila fila-2">
         <div className="tarjeta">
-          <div className="tarjeta-cabecera"><h2>Ítems que dejaron de fallar</h2></div>
+          <div className="tarjeta-cabecera">
+            <h2>Ítems que dejaron de fallar</h2>
+            <span className="min tenue">respecto de cualquier pesquisa previa</span>
+          </div>
           <div className="tarjeta-cuerpo">
             {dejaronDeFallar.length === 0
-              ? <p className="tenue min">Ninguno entre la primera y la última pesquisa.</p>
+              ? <p className="tenue min">Ninguno: no hubo ítems fallados que se hayan recuperado.</p>
               : <ul style={{ margin: 0, paddingLeft: 18 }} className="min">
                   {dejaronDeFallar.map((t) => <li key={t} style={{ color: 'var(--ok)' }}>{t}</li>)}
                 </ul>}
