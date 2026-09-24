@@ -1,9 +1,14 @@
 import { createClient } from '@supabase/supabase-js'
 
-const url = import.meta.env.VITE_SUPABASE_URL
+const crudo = import.meta.env.VITE_SUPABASE_URL
 const anon = import.meta.env.VITE_SUPABASE_ANON_KEY
 
-if (!url || !anon) {
+/* Una ruta relativa ('/api-supabase') se resuelve contra el origen actual.
+   Sirve para servir la API por el mismo dominio que la aplicación, sea
+   detrás de un túnel o de un proxy inverso. */
+const url = crudo?.startsWith('/') ? window.location.origin + crudo : crudo
+
+if (!crudo || !anon) {
   throw new Error(
     'Faltan VITE_SUPABASE_URL o VITE_SUPABASE_ANON_KEY. ' +
       'Copiá .env.example a .env.local y completá los valores.',
