@@ -66,15 +66,22 @@ Node 20+, Docker (solo para desarrollo local).
 ### Desarrollo
 
 ```bash
+git clone https://github.com/Fefis0412/Ficha-Prunape-Digital.git
+cd Ficha-Prunape-Digital
+
 npm install
-npx supabase start            # levanta Postgres, Auth y la API
+cp .env.example .env.local    # ya viene con los valores del Supabase local
+
+npx supabase start            # levanta Postgres, Auth y la API (tarda la 1ª vez)
 node scripts/sembrar.mjs      # centros, usuarios y pacientes de prueba
 node scripts/sembrar-demo.mjs # historial clínico para ver la evolución
 npm run dev                   # http://localhost:5173
 ```
 
-`supabase start` imprime las claves; copialas a `.env.local`
-(ver `.env.example`).
+La primera vez `supabase start` descarga varias imágenes de Docker y puede
+tardar bastante. Si falla con *ports are not available*, es que Windows tiene
+reservado ese rango: los puertos de `supabase/config.toml` ya están corridos a
+la serie 553xx por ese motivo.
 
 Cuentas que crea la siembra:
 
@@ -107,7 +114,12 @@ repositorio: solo se usa desde `scripts/sembrar.mjs` en tu máquina.
 npm test                    # 37 pruebas de la lógica clínica
 bash scripts/probar-db.sh   # 27 afirmaciones de aislamiento contra Postgres
 npm run e2e                 # 42 pruebas de navegador
+
+npx playwright test --headed   # verlas correr con el navegador a la vista
+npx playwright test --ui       # panel interactivo, paso a paso
 ```
+
+Las de navegador necesitan la aplicación levantada y los datos sembrados.
 
 Las tres capas cubren cosas distintas:
 
