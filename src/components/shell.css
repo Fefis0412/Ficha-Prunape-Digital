@@ -58,6 +58,15 @@
 
 .columna { display: flex; flex-direction: column; min-width: 0; }
 
+/* En celular la marca del centro va en la cabecera, no en el lateral. */
+.cabecera-marca { display: none; align-items: center; gap: 8px; min-width: 0; }
+.cabecera-marca strong { font-size: 14px; }
+.cabecera-marca span {
+  font-size: 12px; color: var(--texto-2);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+@media (max-width: 820px) { .cabecera-marca { display: flex; } }
+
 .cabecera {
   display: flex;
   align-items: center;
@@ -110,15 +119,54 @@
 
 /* ── responsive ────────────────────────────────────────────────────────── */
 
+/* ── móvil: barra de pestañas abajo, donde llega el pulgar ─────────────── */
+
 @media (max-width: 820px) {
   .marco { grid-template-columns: 1fr; }
+
   .lateral {
-    position: static; height: auto; flex-direction: row; align-items: center;
-    overflow-x: auto; padding: 8px 12px; gap: 8px;
-    border-right: 0; border-bottom: 1px solid var(--borde);
+    position: fixed;
+    /* top:auto es imprescindible: el valor del escritorio sigue aplicando y,
+       con top y bottom a la vez, el elemento se estira entre los dos. */
+    top: auto;
+    left: 0; right: 0; bottom: 0;
+    height: auto;
+    z-index: 40;
+    flex-direction: row;
+    align-items: stretch;
+    padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px));
+    gap: 0;
+    border-right: 0;
+    border-top: 1px solid var(--borde);
+    box-shadow: 0 -1px 8px rgba(16, 24, 32, 0.06);
   }
-  .lateral-marca { padding: 0 8px 0 0; }
-  .lateral-titulo span { display: none; }
-  .lateral-nav { flex-direction: row; }
-  .contenido { padding: 16px 14px 48px; }
+  /* la marca va arriba en la cabecera, no en la barra de pestañas */
+  .lateral-marca { display: none; }
+
+  .lateral-nav { flex-direction: row; flex: 1; gap: 2px; }
+  .lateral-link {
+    flex: 1;
+    text-align: center;
+    padding: 9px 4px;
+    font-size: 12px;
+    border-radius: var(--r-sm);
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .lateral-link:active { background: #eceff1; }
+
+  .marco.admin .lateral { background: var(--superficie); border-top-color: var(--borde); }
+  .marco.admin .lateral-link { color: var(--texto-2); }
+  .marco.admin .lateral-link.activo { background: var(--primario-suave); color: var(--primario-oscuro); }
+
+  .cabecera {
+    padding: 8px 14px;
+    padding-top: calc(8px + env(safe-area-inset-top, 0px));
+    gap: 8px;
+  }
+  /* deja lugar para la barra de pestañas */
+  .contenido { padding: 14px 14px 88px; }
+
+  .usuario-nombre { max-width: 110px; }
 }

@@ -44,7 +44,7 @@ export default function Equipo() {
           <h2>Integrantes</h2>
           <span className="min tenue">{equipo.length}</span>
         </div>
-        <table className="tabla">
+        <table className="tabla tabla-apila">
           <thead>
             <tr><th>Nombre</th><th>Correo</th><th>Rol</th><th>Estado</th><th>Alta</th><th /></tr>
           </thead>

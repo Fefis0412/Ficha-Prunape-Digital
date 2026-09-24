@@ -39,7 +39,20 @@
 
 * { box-sizing: border-box; }
 
+html {
+  /* el destello gris al tocar es el "esto es una web" más ruidoso de todos */
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+  /* sin pull-to-refresh: esto es una aplicación, no un documento */
+  overscroll-behavior: none;
+}
+
 html, body, #root { height: 100%; }
+
+/* 100dvh sigue a la barra de direcciones cuando aparece y desaparece */
+@supports (height: 100dvh) {
+  html, body, #root { height: 100dvh; }
+}
 
 body {
   margin: 0;
@@ -76,6 +89,10 @@ a { color: var(--primario); }
   font-weight: 500;
   padding: 0 14px;
   height: 36px;
+  /* sin espera de 300 ms por si viene un segundo toque */
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
   border-radius: var(--r-sm);
   border: 1px solid var(--borde-fuerte);
   background: var(--superficie);
@@ -84,21 +101,32 @@ a { color: var(--primario); }
   white-space: nowrap;
   transition: background 120ms ease, border-color 120ms ease, opacity 120ms ease;
 }
-.btn:hover:not(:disabled) { background: #f2f4f5; }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+/* en táctil el :hover se queda pegado después de tocar */
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover:not(:disabled) { background: #f2f4f5; }
+}
+/* el dedo espera respuesta al apoyar, no al soltar */
+.btn:active:not(:disabled) { transform: scale(0.97); }
 
 .btn-primario {
   background: var(--primario);
   border-color: var(--primario);
   color: #fff;
 }
-.btn-primario:hover:not(:disabled) { background: var(--primario-oscuro); border-color: var(--primario-oscuro); }
+@media (hover: hover) and (pointer: fine) {
+  .btn-primario:hover:not(:disabled) { background: var(--primario-oscuro); border-color: var(--primario-oscuro); }
+}
 
 .btn-peligro { color: var(--error); border-color: #e9c3c3; }
-.btn-peligro:hover:not(:disabled) { background: var(--error-suave); }
+@media (hover: hover) and (pointer: fine) {
+  .btn-peligro:hover:not(:disabled) { background: var(--error-suave); }
+}
 
 .btn-fantasma { border-color: transparent; background: transparent; }
-.btn-fantasma:hover:not(:disabled) { background: #eceff1; }
+@media (hover: hover) and (pointer: fine) {
+  .btn-fantasma:hover:not(:disabled) { background: #eceff1; }
+}
 
 .btn-grande { height: 42px; padding: 0 20px; font-size: 15px; }
 .btn-bloque { width: 100%; }
@@ -169,7 +197,10 @@ a { color: var(--primario); }
 .tabla td { padding: 11px 14px; border-bottom: 1px solid var(--borde); }
 .tabla tbody tr:last-child td { border-bottom: 0; }
 .tabla tbody tr.clicable { cursor: pointer; }
-.tabla tbody tr.clicable:hover { background: var(--superficie-2); }
+@media (hover: hover) and (pointer: fine) {
+  .tabla tbody tr.clicable:hover { background: var(--superficie-2); }
+}
+.tabla tbody tr.clicable:active { background: #eef1f3; }
 
 /* ── insignias ───────────────────────────────────────────────────────────── */
 
@@ -237,4 +268,91 @@ a { color: var(--primario); }
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+
+/* ── modal ───────────────────────────────────────────────────────────────── */
+
+.modal-fondo {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: rgba(16, 24, 32, 0.42);
+  padding: 20px;
+}
+
+.modal-caja {
+  width: 100%;
+  box-shadow: var(--sombra-3);
+  max-height: 90vh;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+@supports (max-height: 90dvh) { .modal-caja { max-height: 90dvh; } }
+
+/* ── móvil ───────────────────────────────────────────────────────────────── */
+
+@media (max-width: 720px) {
+  /* En un celular un cuadro centrado queda lejos del pulgar y deja franjas
+     inútiles: sube desde abajo, a lo ancho, como una hoja del sistema. */
+  .modal-fondo { place-items: end stretch; padding: 0; }
+  .modal-caja {
+    max-width: none !important;
+    max-height: 92dvh;
+    border-radius: var(--r-lg) var(--r-lg) 0 0;
+    border-bottom: 0;
+    animation: subir 220ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .modal-cabecera { position: sticky; top: 0; background: var(--superficie); z-index: 1; }
+  .modal-cuerpo { padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px)); }
+}
+
+@keyframes subir {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+
+@media (pointer: coarse) {
+  /* por debajo de 16px iOS hace zoom al enfocar y no vuelve */
+  .input, .select, .textarea { font-size: 16px; height: 44px; }
+  .textarea { height: auto; min-height: 92px; }
+  /* 44 px es el mínimo cómodo para un dedo */
+  .btn { height: 44px; padding: 0 16px; }
+  .btn-grande { height: 50px; }
+}
+
+@media (max-width: 720px) {
+  body { font-size: 15px; }
+  /* nada debe empujar el viewport hacia los costados */
+  .tarjeta, .tabla { max-width: 100%; }
+  .tabla:not(.tabla-apila) { display: block; overflow-x: auto; }
+  h1 { font-size: 20px; }
+
+  .fila-2, .fila-3 { grid-template-columns: 1fr; }
+
+  .tarjeta { border-radius: var(--r); }
+  .tarjeta-cuerpo { padding: 15px; }
+  .tarjeta-cabecera { padding: 13px 15px; }
+
+  /* Las tablas anchas se vuelven tarjetas apiladas: en un celular una tabla
+     de 6 columnas obliga a hacer scroll horizontal y a entrecerrar los ojos. */
+  .tabla-apila thead { display: none; }
+  .tabla-apila, .tabla-apila tbody, .tabla-apila tr, .tabla-apila td { display: block; width: 100%; }
+  .tabla-apila tr {
+    border-bottom: 1px solid var(--borde);
+    padding: 12px 15px;
+    position: relative;
+  }
+  .tabla-apila tr:last-child { border-bottom: 0; }
+  .tabla-apila td { border: 0; padding: 1px 0; }
+  .tabla-apila td[data-rotulo]::before {
+    content: attr(data-rotulo) ' ';
+    color: var(--texto-3);
+    font-size: 12px;
+  }
+  .tabla-apila td:first-child { font-size: 15px; margin-bottom: 3px; }
+  .tabla-apila td:empty { display: none; }
 }

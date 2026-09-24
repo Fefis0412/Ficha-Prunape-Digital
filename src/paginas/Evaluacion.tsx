@@ -5,6 +5,8 @@ import {
   cerrarEvaluacion, descartarBorrador, guardarBorrador, obtenerEvaluacion,
 } from '@/datos/consultas'
 import { FichaPrunape, useImprimir, type DatosCabecera } from '@/components/FichaPrunape'
+import { ListaItems } from '@/components/ListaItems'
+import { useEsAngosta } from '@/lib/pantalla'
 import { Aviso, Cargando, Insignia, Modal, fechaCorta } from '@/components/ui'
 import { calcularResultado, type Resultado } from '@/lib/resultado'
 import { descomponer, formatoLargo } from '@/lib/edad'
@@ -34,6 +36,12 @@ export default function Evaluacion() {
 
   const temporizador = useRef<ReturnType<typeof setTimeout> | null>(null)
   const sucio = useRef(false)
+
+  /* En pantalla angosta la lista es el modo de trabajo y el gráfico la vista
+     de referencia; en pantalla ancha, al revés. */
+  const angosta = useEsAngosta()
+  const [modo, setModo] = useState<'lista' | 'ficha' | null>(null)
+  const vista = modo ?? (angosta ? 'lista' : 'ficha')
 
   useImprimir(3799, 4925)
 
@@ -170,7 +178,23 @@ export default function Evaluacion() {
         {cerrada
           ? <Insignia tono="ok">Cerrada</Insignia>
           : <EstadoAutoguardado estado={guardado} enLinea={enLinea} />}
-        <button className="btn" onClick={() => window.print()}>Imprimir / PDF</button>
+        <div className="eval-modo" role="group" aria-label="Vista">
+          <button
+            className={vista === 'lista' ? 'activo' : ''}
+            onClick={() => setModo('lista')}
+            aria-pressed={vista === 'lista'}
+          >
+            Lista
+          </button>
+          <button
+            className={vista === 'ficha' ? 'activo' : ''}
+            onClick={() => setModo('ficha')}
+            aria-pressed={vista === 'ficha'}
+          >
+            Ficha
+          </button>
+        </div>
+        <button className="btn eval-imprimir" onClick={() => window.print()}>Imprimir / PDF</button>
       </header>
 
       {!enLinea && !cerrada && (
@@ -183,18 +207,72 @@ export default function Evaluacion() {
       )}
 
       <div className="eval-cuerpo">
-        <div className="eval-ficha">
-          <FichaPrunape
-            respuestas={respuestas}
-            mesesCorregidos={mesesCorregidos}
-            cabecera={cabecera}
-            soloLectura={cerrada}
-            onToggle={marcar}
-          />
+        <div className={vista === 'ficha' ? 'eval-ficha' : 'eval-lista'}>
+          {vista === 'ficha' ? (
+            <>
+              {angosta && (
+                <p className="min tenue eval-pista no-imprimir">
+                  Deslizá para recorrer la ficha. Para marcar cómodo, usá la vista Lista.
+                </p>
+              )}
+              <div className="eval-ficha-desplaza">
+                <FichaPrunape
+                  respuestas={respuestas}
+                  mesesCorregidos={mesesCorregidos}
+                  cabecera={cabecera}
+                  soloLectura={cerrada}
+                  onToggle={marcar}
+                  anchoMaximo={angosta ? 1500 : 1700}
+                />
+              </div>
+            </>
+          ) : (
+            <ListaItems
+              respuestas={respuestas}
+              mesesCorregidos={mesesCorregidos}
+              soloLectura={cerrada}
+              onToggle={marcar}
+            />
+          )}
         </div>
 
-        <aside className="eval-panel no-imprimir">
-          <h2>Resumen</h2>
+        {/* En celular el resumen es una barra compacta fija abajo: si se
+            muestra entero tapa la lista que hay que ir marcando. Las
+            observaciones y el descarte bajan al final del contenido. */}
+        {angosta && (
+          <div className="eval-secundario no-imprimir">
+            <div className="campo">
+              <label htmlFor="obs-m">Observaciones</label>
+              <textarea
+                id="obs-m" className="textarea" value={observaciones} disabled={cerrada}
+                placeholder="Conducta durante la prueba, factores que puedan haber influido…"
+                onChange={(e) => {
+                  setObservaciones(e.target.value)
+                  persistirLocal(respuestas, e.target.value)
+                  programar(respuestas, e.target.value)
+                }}
+              />
+            </div>
+            <p className="min tenue">
+              Ayuda de cálculo. La interpretación final es del profesional y debe
+              contrastarse con el manual del PRUNAPE.
+            </p>
+            {cerrada ? (
+              <div className="aviso aviso-info">
+                Cerrada el {fechaCorta(ev.cerrada_en)}. Forma parte de la historia
+                clínica y ya no se edita.
+              </div>
+            ) : (
+              <button className="btn btn-peligro btn-bloque"
+                onClick={() => setConfirmarDescarte(true)}>
+                Descartar borrador
+              </button>
+            )}
+          </div>
+        )}
+
+        <aside className={`eval-panel no-imprimir${angosta ? ' compacto' : ''}`}>
+          {!angosta && <h2>Resumen</h2>}
 
           <div className="eval-cifras">
             <Cifra n={resultado.fallosA} rotulo="Tipo A ✱ fallados" tono={resultado.fallosA > 0 ? 'error' : undefined} />
@@ -207,46 +285,55 @@ export default function Evaluacion() {
               : resultado.veredicto === 'pasa' ? 'Sin criterio de fracaso'
               : 'Todavía no hay ítems marcados'}
           </div>
-          <p className="min tenue">
-            Ayuda de cálculo. La interpretación final es del profesional y debe
-            contrastarse con el manual del PRUNAPE.
-          </p>
 
-          {resultado.sinMarcarEsperables > 0 && !cerrada && (
+          {!angosta && (
+            <p className="min tenue">
+              Ayuda de cálculo. La interpretación final es del profesional y debe
+              contrastarse con el manual del PRUNAPE.
+            </p>
+          )}
+
+          {resultado.sinMarcarEsperables > 0 && !cerrada && !angosta && (
             <Aviso tipo="alerta">
               Quedan <strong>{resultado.sinMarcarEsperables}</strong> ítems sin marcar
               dentro del rango de edad.
             </Aviso>
           )}
 
-          <div className="campo">
-            <label htmlFor="obs">Observaciones</label>
-            <textarea
-              id="obs" className="textarea" value={observaciones} disabled={cerrada}
-              placeholder="Conducta durante la prueba, factores que puedan haber influido…"
-              onChange={(e) => {
-                setObservaciones(e.target.value)
-                persistirLocal(respuestas, e.target.value)
-                programar(respuestas, e.target.value)
-              }}
-            />
-          </div>
+          {!angosta && (
+            <div className="campo">
+              <label htmlFor="obs">Observaciones</label>
+              <textarea
+                id="obs" className="textarea" value={observaciones} disabled={cerrada}
+                placeholder="Conducta durante la prueba, factores que puedan haber influido…"
+                onChange={(e) => {
+                  setObservaciones(e.target.value)
+                  persistirLocal(respuestas, e.target.value)
+                  programar(respuestas, e.target.value)
+                }}
+              />
+            </div>
+          )}
 
           {cerrada ? (
-            <div className="aviso aviso-info">
-              Cerrada el {fechaCorta(ev.cerrada_en)}. Forma parte de la historia clínica
-              y ya no se edita.
-            </div>
+            !angosta && (
+              <div className="aviso aviso-info">
+                Cerrada el {fechaCorta(ev.cerrada_en)}. Forma parte de la historia clínica
+                y ya no se edita.
+              </div>
+            )
           ) : (
             <>
               <button className="btn btn-primario btn-grande btn-bloque"
                 onClick={() => setConfirmarCierre(true)}>
                 Cerrar y firmar
               </button>
-              <button className="btn btn-peligro btn-bloque"
-                onClick={() => setConfirmarDescarte(true)}>
-                Descartar borrador
-              </button>
+              {!angosta && (
+                <button className="btn btn-peligro btn-bloque"
+                  onClick={() => setConfirmarDescarte(true)}>
+                  Descartar borrador
+                </button>
+              )}
             </>
           )}
         </aside>

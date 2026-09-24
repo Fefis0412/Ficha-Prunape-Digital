@@ -1,0 +1,163 @@
+.lista { display: flex; flex-direction: column; }
+
+/* ── filtros ─────────────────────────────────────────────────────────────── */
+
+.lista-filtros {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--superficie);
+  border-bottom: 1px solid var(--borde);
+  padding: 10px 14px 11px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.lista-chips {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  /* el carrusel maneja el horizontal; el navegador conserva el vertical */
+  touch-action: pan-y;
+  scrollbar-width: none;
+  margin: 0 -14px;
+  padding: 0 14px;
+}
+.lista-chips::-webkit-scrollbar { display: none; }
+
+.chip {
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  flex: none;
+  padding: 7px 13px;
+  min-height: 36px;
+  border-radius: 99px;
+  border: 1px solid var(--borde-fuerte);
+  background: var(--superficie);
+  color: var(--texto-2);
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+}
+.chip:active { transform: scale(0.96); }
+.chip.activo {
+  background: var(--primario);
+  border-color: var(--primario);
+  color: #fff;
+}
+
+.lista-conmutador {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--texto-2);
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: pointer;
+}
+.lista-conmutador input { width: 17px; height: 17px; accent-color: var(--primario); }
+
+.lista-progreso { display: flex; align-items: center; gap: 9px; }
+.lista-barra {
+  flex: 1;
+  height: 5px;
+  border-radius: 99px;
+  background: #eef1f3;
+  overflow: hidden;
+}
+.lista-barra span {
+  display: block;
+  height: 100%;
+  background: var(--primario);
+  transition: width 220ms ease;
+}
+
+/* ── grupos e ítems ──────────────────────────────────────────────────────── */
+
+.lista-grupo-titulo {
+  position: sticky;
+  top: 0;
+  background: var(--superficie-2);
+  border-bottom: 1px solid var(--borde);
+  padding: 7px 14px;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--texto-3);
+  z-index: 5;
+}
+
+.lista-fila {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--borde);
+  transition: background 140ms ease;
+}
+.lista-fila:last-child { border-bottom: 0; }
+.lista-fila.pasa { background: rgba(26, 127, 55, 0.05); }
+.lista-fila.no_pasa { background: rgba(198, 40, 40, 0.05); }
+
+.lista-texto { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+
+.lista-etiqueta {
+  font-size: 14px;
+  line-height: 1.3;
+  color: var(--texto);
+}
+.lista-tipo { color: var(--primario); margin-right: 4px; font-size: 12px; }
+
+.lista-edad {
+  font-size: 12px;
+  color: var(--texto-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.lista-acciones { display: flex; gap: 7px; flex: none; }
+
+.lista-btn {
+  width: 46px;
+  height: 46px;
+  font-size: 19px;
+  font-weight: 700;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--borde-fuerte);
+  background: var(--superficie);
+  color: var(--texto-3);
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: background 120ms ease, border-color 120ms ease, color 120ms ease, transform 100ms ease;
+}
+.lista-btn:active:not(:disabled) { transform: scale(0.93); }
+.lista-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.lista-btn.pasa[aria-pressed='true'] {
+  background: var(--ok);
+  border-color: var(--ok);
+  color: #fff;
+}
+.lista-btn.no-pasa[aria-pressed='true'] {
+  background: var(--error);
+  border-color: var(--error);
+  color: #fff;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .lista-btn:hover:not(:disabled) { border-color: var(--texto-3); }
+  .chip:hover:not(.activo) { background: #f2f4f5; }
+}
+
+/* en pantallas chicas la etiqueta necesita todo el ancho posible */
+@media (max-width: 480px) {
+  .lista-fila { padding: 9px 12px; gap: 9px; }
+  .lista-btn { width: 44px; height: 44px; }
+}

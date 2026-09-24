@@ -14,7 +14,20 @@ export default defineConfig({
     screenshot: 'only-on-failure',
     locale: 'es-BO',
   },
-  projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
+  projects: [
+    {
+      name: 'escritorio',
+      use: { ...devices['Desktop Chrome'] },
+      testIgnore: /05-movil/,
+    },
+    {
+      // El celular se prueba en WebKit porque es el motor de Safari en iOS,
+      // que es donde de verdad se va a usar.
+      name: 'celular',
+      use: { ...devices['iPhone 13'] },
+      testMatch: /05-movil/,
+    },
+  ],
   webServer: {
     command: 'npm run dev',
     url: 'http://localhost:5173',

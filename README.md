@@ -8,8 +8,11 @@ equipo, sus pacientes y su identidad visual.
 
 ## Qué hace
 
-**Para la terapeuta**
+**Para la terapeuta** — pensado para usarse desde el celular
 - Registro de pacientes con edad gestacional y corrección por prematurez.
+- Dos modos de aplicar la pesquisa: **lista** (el modo de trabajo en celular,
+  con botones grandes y filtro por área y por edad) y **ficha** (el gráfico
+  igual al papel, para consultar e imprimir).
 - La ficha del PRUNAPE reproducida fiel al papel: los 79 ítems con sus
   percentilos, la línea de edad corregida marcada sobre el gráfico.
 - Marcado por clic (pasa / no pasa / sin marcar), con guardado automático y
@@ -113,11 +116,19 @@ repositorio: solo se usa desde `scripts/sembrar.mjs` en tu máquina.
 ```bash
 npm test                    # 37 pruebas de la lógica clínica
 bash scripts/probar-db.sh   # 27 afirmaciones de aislamiento contra Postgres
-npm run e2e                 # 42 pruebas de navegador
+npm run e2e                 # 49 pruebas de navegador
 
-npx playwright test --headed   # verlas correr con el navegador a la vista
-npx playwright test --ui       # panel interactivo, paso a paso
+npx playwright test --project=escritorio   # solo escritorio (Chromium)
+npx playwright test --project=celular      # solo celular (WebKit, perfil iPhone)
+npx playwright test --headed               # verlas correr a la vista
+npx playwright test --ui                   # panel interactivo, paso a paso
 ```
+
+Las de celular corren sobre **WebKit**, que es el motor de Safari en iOS, y
+verifican lo que suele romperse ahí: que nada desborde el ancho, que la
+navegación quede anclada abajo, que los campos midan 16px (por debajo de eso
+iOS hace zoom al enfocar y no vuelve), que los botones lleguen al mínimo
+táctil de 44px y que el resumen fijo no tape la lista.
 
 Las de navegador necesitan la aplicación levantada y los datos sembrados.
 
@@ -130,7 +141,7 @@ Las tres capas cubren cosas distintas:
   la auditoría no se pueda alterar.
 - **Navegador** — los flujos completos, incluidos los casos malos: credenciales
   incorrectas, fechas futuras, duplicados, historia clínica repetida, intentos
-  de abrir por URL el paciente de otro.
+  de abrir por URL el paciente de otro; más la estructura en celular.
 
 ---
 
@@ -139,6 +150,7 @@ Las tres capas cubren cosas distintas:
 ```
 src/
   components/FichaPrunape.tsx   la ficha; reproduce el formulario impreso
+  components/ListaItems.tsx     los mismos ítems como lista, para el celular
   data/catalogo-v1.json         los 79 ítems: geometría, área, tipo, percentilos
   lib/edad.ts                   edad postnatal y corregida
   lib/resultado.ts              criterio de fracaso

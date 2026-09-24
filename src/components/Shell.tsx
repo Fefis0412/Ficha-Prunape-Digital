@@ -54,6 +54,24 @@ function Lateral({ enlaces, titulo, esAdmin }: { enlaces: Enlace[]; titulo: stri
   )
 }
 
+/** Marca del centro; en celular vive en la cabecera porque abajo está la
+ *  barra de pestañas. */
+function MarcaCabecera({ titulo, esAdmin }: { titulo: string; esAdmin: boolean }) {
+  const { centro } = useSesion()
+  const logo = centro?.branding?.logo_url
+  return (
+    <div className="cabecera-marca">
+      {logo
+        ? <img src={logo} alt="" className="lateral-logo" />
+        : <span className="lateral-punto" aria-hidden />}
+      <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.2, minWidth: 0 }}>
+        <strong>{titulo}</strong>
+        {!esAdmin && centro && <span>{centro.nombre}</span>}
+      </div>
+    </div>
+  )
+}
+
 function BarraUsuario() {
   const { perfil, salir } = useSesion()
   const [abierto, setAbierto] = useState(false)
@@ -168,6 +186,7 @@ export function Shell() {
       <Lateral enlaces={ENLACES_CENTRO} titulo="PRUNAPE" esAdmin={false} />
       <div className="columna">
         <header className="cabecera">
+          <MarcaCabecera titulo="PRUNAPE" esAdmin={false} />
           <span className="crece" />
           <BarraUsuario />
         </header>
@@ -184,6 +203,7 @@ export function ShellAdmin() {
       <div className="columna">
         <BarraSoporte />
         <header className="cabecera">
+          <MarcaCabecera titulo="Backoffice" esAdmin />
           <span className="crece" />
           <BarraUsuario />
         </header>

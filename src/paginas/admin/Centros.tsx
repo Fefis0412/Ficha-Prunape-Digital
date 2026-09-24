@@ -37,7 +37,7 @@ export default function Centros() {
             accion={<button className="btn btn-primario" onClick={() => setAbrir(true)}>+ Nuevo centro</button>}
           />
         ) : (
-          <table className="tabla">
+          <table className="tabla tabla-apila">
             <thead>
               <tr><th>Centro</th><th>Identificador</th><th>Alta</th><th>Estado</th><th /></tr>
             </thead>

@@ -58,7 +58,7 @@ export default function Pacientes() {
             )}
           />
         ) : (
-          <table className="tabla">
+          <table className="tabla tabla-apila">
             <thead>
               <tr>
                 <th>Nombre</th><th>Edad</th><th>H. Clínica</th>
@@ -78,11 +78,11 @@ export default function Pacientes() {
                         <> <Insignia tono="primario">EG {p.edad_gestacional_sem}s</Insignia></>
                       )}
                     </td>
-                    <td className="tenue">
+                    <td className="tenue" data-rotulo="Edad">
                       {formatoCorto(edadPostnatal(fecha(p.fecha_nacimiento), new Date()))}
                     </td>
-                    <td className="tenue mono">{p.historia_clinica || '—'}</td>
-                    <td className="tenue mono">{ult ? fechaCorta(ult.fecha_pesquisa) : '—'}</td>
+                    <td className="tenue mono" data-rotulo="HC">{p.historia_clinica || '—'}</td>
+                    <td className="tenue mono" data-rotulo="Última">{ult ? fechaCorta(ult.fecha_pesquisa) : '—'}</td>
                     <td>
                       {!ult ? <span className="tenue">—</span>
                         : ult.estado === 'borrador' ? <Insignia tono="alerta">Borrador</Insignia>

@@ -71,25 +71,22 @@ export function Modal({
 
   return (
     <div
+      className="modal-fondo"
       onMouseDown={(e) => { if (e.target === e.currentTarget) onCerrar() }}
-      style={{
-        position: 'fixed', inset: 0, zIndex: 100, display: 'grid', placeItems: 'center',
-        background: 'rgba(16,24,32,.42)', padding: 20,
-      }}
     >
       <div
         ref={caja}
         role="dialog"
         aria-modal="true"
         aria-label={titulo}
-        className="tarjeta"
-        style={{ width: '100%', maxWidth: ancho, boxShadow: 'var(--sombra-3)', maxHeight: '90vh', overflow: 'auto' }}
+        className="tarjeta modal-caja"
+        style={{ maxWidth: ancho }}
       >
-        <div className="tarjeta-cabecera">
+        <div className="tarjeta-cabecera modal-cabecera">
           <h2>{titulo}</h2>
           <button className="btn btn-fantasma" onClick={onCerrar} aria-label="Cerrar">✕</button>
         </div>
-        <div className="tarjeta-cuerpo">{children}</div>
+        <div className="tarjeta-cuerpo modal-cuerpo">{children}</div>
       </div>
     </div>
   )

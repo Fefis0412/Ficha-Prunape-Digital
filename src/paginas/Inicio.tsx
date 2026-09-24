@@ -54,7 +54,7 @@ export default function Inicio() {
             <h2>Pesquisas sin cerrar</h2>
             <Insignia tono="alerta">{borradores.length}</Insignia>
           </div>
-          <table className="tabla">
+          <table className="tabla tabla-apila">
             <tbody>
               {borradores.map(({ paciente, eval: ev }) => (
                 <tr key={ev.id} className="clicable" onClick={() => nav(`/app/evaluacion/${ev.id}`)}>
@@ -62,7 +62,7 @@ export default function Inicio() {
                   <td className="tenue">
                     {formatoCorto(edadPostnatal(fecha(paciente.fecha_nacimiento), new Date()))}
                   </td>
-                  <td className="tenue mono">{fechaCorta(ev.fecha_pesquisa)}</td>
+                  <td className="tenue mono" data-rotulo="Fecha">{fechaCorta(ev.fecha_pesquisa)}</td>
                   <td style={{ textAlign: 'right' }}>
                     <span className="btn btn-fantasma">Continuar →</span>
                   </td>
@@ -82,7 +82,7 @@ export default function Inicio() {
             accion={<Link className="btn btn-primario" to="/app/pacientes">Ir a pacientes</Link>}
           />
         ) : (
-          <table className="tabla">
+          <table className="tabla tabla-apila">
             <thead>
               <tr><th>Paciente</th><th>Edad</th><th>Fecha</th><th>Resultado</th></tr>
             </thead>
@@ -95,7 +95,7 @@ export default function Inicio() {
                     <td className="tenue">
                       {formatoCorto(edadPostnatal(fecha(paciente.fecha_nacimiento), fecha(ev.fecha_pesquisa)))}
                     </td>
-                    <td className="tenue mono">{fechaCorta(ev.fecha_pesquisa)}</td>
+                    <td className="tenue mono" data-rotulo="Fecha">{fechaCorta(ev.fecha_pesquisa)}</td>
                     <td>
                       {ev.estado === 'borrador'
                         ? <Insignia tono="alerta">Borrador</Insignia>

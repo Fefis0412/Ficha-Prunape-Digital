@@ -68,7 +68,7 @@ export default function UsuariosGlobales() {
         {lista.length === 0 ? (
           <Vacio titulo="No hay usuarios todavía" />
         ) : (
-          <table className="tabla">
+          <table className="tabla tabla-apila">
             <thead>
               <tr><th>Nombre</th><th>Correo</th><th>Centro</th><th>Rol</th><th>Estado</th><th>Alta</th></tr>
             </thead>
