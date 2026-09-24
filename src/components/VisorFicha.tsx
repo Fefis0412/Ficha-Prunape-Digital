@@ -33,6 +33,7 @@ export function VisorFicha({ alto = '100%', ...props }: VisorFichaProps) {
   const [escala, setEscala] = useState(0.35)
   const [pos, setPos] = useState<Punto>({ x: 0, y: 0 })
   const [listo, setListo] = useState(false)
+  const [gesto, setGesto] = useState(false)
 
   const punteros = useRef(new Map<number, Punto>())
   const inicio = useRef<{ dist: number; escala: number; centro: Punto; pos: Punto } | null>(null)
@@ -118,6 +119,7 @@ export function VisorFicha({ alto = '100%', ...props }: VisorFichaProps) {
   }
 
   const onPointerDown = (e: React.PointerEvent) => {
+    setGesto(true)
     punteros.current.set(e.pointerId, relativo(e))
     recorrido.current = 0
     arrastro.current = false
@@ -174,6 +176,7 @@ export function VisorFicha({ alto = '100%', ...props }: VisorFichaProps) {
     const el = e.currentTarget as HTMLElement
     if (el.hasPointerCapture(e.pointerId)) el.releasePointerCapture(e.pointerId)
     punteros.current.delete(e.pointerId)
+    if (punteros.current.size === 0) setGesto(false)
     if (punteros.current.size < 2) inicio.current = null
 
     // dos toques seguidos: acercar o volver
@@ -218,9 +221,6 @@ export function VisorFicha({ alto = '100%', ...props }: VisorFichaProps) {
     zoomEn(escala * (e.deltaY < 0 ? 1.12 : 0.89), { x: e.clientX - c.left, y: e.clientY - c.top })
   }
 
-  // porcentaje sobre el tamaño real de la hoja, como en un visor de imágenes
-  const porcentaje = Math.round(escala * 100)
-
   return (
     <div className="visor" style={{ height: alto }}>
       <div
@@ -235,8 +235,8 @@ export function VisorFicha({ alto = '100%', ...props }: VisorFichaProps) {
         onWheel={rueda}
       >
         <div
-          className="visor-lienzo"
-          style={{ transform: `translate3d(${pos.x}px, ${pos.y}px, 0) scale(${escala})` }}
+          className={`visor-lienzo${gesto ? ' en-gesto' : ''}`}
+          style={{ transform: `translate(${pos.x}px, ${pos.y}px) scale(${escala})` }}
         >
           <FichaPrunape {...props} escalaFija={1} onMedidas={onMedidas} />
         </div>
@@ -256,31 +256,6 @@ export function VisorFicha({ alto = '100%', ...props }: VisorFichaProps) {
         <button type="button" className="visor-btn" onClick={() => ajustar()} title="Ver la ficha entera">
           Ver todo
         </button>
-        <div className="visor-zoom">
-          <button
-            type="button"
-            aria-label="Alejar"
-            disabled={escala <= MIN + 0.001}
-            onClick={() => {
-              const c = caja()!
-              zoomEn(escala / 1.35, { x: c.width / 2, y: c.height / 2 })
-            }}
-          >
-            −
-          </button>
-          <span aria-live="polite">{porcentaje}%</span>
-          <button
-            type="button"
-            aria-label="Acercar"
-            disabled={escala >= MAX - 0.001}
-            onClick={() => {
-              const c = caja()!
-              zoomEn(escala * 1.35, { x: c.width / 2, y: c.height / 2 })
-            }}
-          >
-            +
-          </button>
-        </div>
       </div>
     </div>
   )

@@ -213,14 +213,16 @@ export default function Evaluacion() {
         <div className="eval-titulo">
           <strong>{nombreCompleto(p)}</strong>
           <span className="min tenue">
-            {formatoLargo(ecorr)} corregida · pesquisa {fechaCorta(ev.fecha_pesquisa)}
+            {angosta
+              ? `${formatoLargo(ecorr)} corregida`
+              : `${formatoLargo(ecorr)} corregida · pesquisa ${fechaCorta(ev.fecha_pesquisa)}`}
           </span>
         </div>
         <span className="crece" />
         {!enLinea && <Insignia tono="alerta">Sin conexión</Insignia>}
         {cerrada
           ? <Insignia tono="ok">Cerrada</Insignia>
-          : <EstadoAutoguardado estado={guardado} enLinea={enLinea} />}
+          : <EstadoAutoguardado estado={guardado} enLinea={enLinea} compacto={angosta} />}
         <div className="eval-modo" role="group" aria-label="Vista">
           <button
             className={vista === 'ficha' ? 'activo' : ''}
@@ -318,17 +320,41 @@ export default function Evaluacion() {
         <aside className={`eval-panel no-imprimir${angosta ? ' compacto' : ''}`} ref={refPanel}>
           {!angosta && <h2>Resumen</h2>}
 
-          <div className="eval-cifras">
-            <Cifra n={resultado.fallosA} rotulo="Tipo A ✱ fallados" tono={resultado.fallosA > 0 ? 'error' : undefined} />
-            <Cifra n={resultado.fallosB} rotulo="Tipo B fallados" tono={resultado.fallosB >= 2 ? 'error' : undefined} />
-            <Cifra n={resultado.pasados} rotulo="Pasados" />
-          </div>
+          {angosta ? (
+            <div className="eval-resumen-fila">
+              <span className={`eval-mini${resultado.fallosA > 0 ? ' mal' : ''}`}>
+                <b>{resultado.fallosA}</b> A✱
+              </span>
+              <span className={`eval-mini${resultado.fallosB >= 2 ? ' mal' : ''}`}>
+                <b>{resultado.fallosB}</b> B
+              </span>
+              <span className="eval-mini">
+                <b>{resultado.pasados}</b> pasados
+              </span>
+              <span className={`eval-punto ${resultado.veredicto}`} title={
+                resultado.veredicto === 'derivar' ? 'Criterio de fracaso alcanzado'
+                  : resultado.veredicto === 'pasa' ? 'Sin criterio de fracaso'
+                  : 'Sin ítems marcados'
+              }>
+                {resultado.veredicto === 'derivar' ? 'Fracaso'
+                  : resultado.veredicto === 'pasa' ? 'Sin fracaso' : '—'}
+              </span>
+            </div>
+          ) : (
+            <>
+              <div className="eval-cifras">
+                <Cifra n={resultado.fallosA} rotulo="Tipo A ✱ fallados" tono={resultado.fallosA > 0 ? 'error' : undefined} />
+                <Cifra n={resultado.fallosB} rotulo="Tipo B fallados" tono={resultado.fallosB >= 2 ? 'error' : undefined} />
+                <Cifra n={resultado.pasados} rotulo="Pasados" />
+              </div>
 
-          <div className={`eval-veredicto ${resultado.veredicto}`}>
-            {resultado.veredicto === 'derivar' ? 'Criterio de fracaso alcanzado'
-              : resultado.veredicto === 'pasa' ? 'Sin criterio de fracaso'
-              : 'Todavía no hay ítems marcados'}
-          </div>
+              <div className={`eval-veredicto ${resultado.veredicto}`}>
+                {resultado.veredicto === 'derivar' ? 'Criterio de fracaso alcanzado'
+                  : resultado.veredicto === 'pasa' ? 'Sin criterio de fracaso'
+                  : 'Todavía no hay ítems marcados'}
+              </div>
+            </>
+          )}
 
           {!angosta && (
             <p className="min tenue">
@@ -457,7 +483,18 @@ function Cifra({ n, rotulo, tono }: { n: number; rotulo: string; tono?: 'error' 
   )
 }
 
-function EstadoAutoguardado({ estado, enLinea }: { estado: EstadoGuardado; enLinea: boolean }) {
+function EstadoAutoguardado({
+  estado, enLinea, compacto = false,
+}: { estado: EstadoGuardado; enLinea: boolean; compacto?: boolean }) {
+  // En celular el espacio de la cabecera es para la ficha: alcanza con un punto
+  if (compacto) {
+    const tono = !enLinea ? 'alerta' : estado === 'error' ? 'error'
+      : estado === 'guardado' ? 'ok' : 'neutro'
+    const titulo = !enLinea ? 'Guardado en el equipo'
+      : estado === 'guardando' ? 'Guardando' : estado === 'pendiente' ? 'Sin guardar'
+      : estado === 'error' ? 'Error al guardar' : 'Guardado'
+    return <span className={`eval-punto-guardado ${tono}`} title={titulo} aria-label={titulo} />
+  }
   if (!enLinea) return <Insignia tono="alerta">Guardado en el equipo</Insignia>
   if (estado === 'guardando') return <Insignia><span className="cargando" /> Guardando</Insignia>
   if (estado === 'pendiente') return <Insignia>Sin guardar</Insignia>

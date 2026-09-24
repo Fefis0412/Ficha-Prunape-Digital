@@ -64,7 +64,7 @@ test.describe('Celular · estructura', () => {
 })
 
 test.describe('Celular · aplicar la pesquisa en modo lista', () => {
-  test('arranca en la ficha, con zoom y controles a la vista', async ({ page }) => {
+  test('arranca en la ficha y se maneja con los dedos', async ({ page }) => {
     await entrar(page, 'tomas')
     await page.goto('/app/pacientes')
     await page.getByText('Rojas, Mateo').first().click()
@@ -77,26 +77,105 @@ test.describe('Celular · aplicar la pesquisa en modo lista', () => {
     }
     await expect(page).toHaveURL(/\/app\/evaluacion\//, { timeout: 15_000 })
 
-    // la ficha es la vista por defecto, dentro del visor con zoom
+    // la ficha es la vista por defecto, dentro del visor
     await expect(page.locator('.visor')).toBeVisible({ timeout: 10_000 })
     await expect(page.locator('.ficha-barra[data-item]')).toHaveCount(79)
 
-    // arranca a un zoom en el que se lee, no en el de "ver todo"
-    const zoom = () => page.locator('.visor-zoom span').innerText()
-      .then((t) => parseInt(t, 10))
-    expect(await zoom()).toBeGreaterThanOrEqual(25)
+    // el zoom es con los dedos: no hay botones de + y −
+    await expect(page.locator('.visor-zoom')).toHaveCount(0)
 
-    // los controles no pueden quedar bajo el resumen fijo
-    const mandos = (await page.locator('.visor-mandos').boundingBox())!
-    const panel = (await page.locator('.eval-panel').boundingBox())!
-    expect(mandos.y + mandos.height).toBeLessThanOrEqual(panel.y + 2)
+    // la ficha se queda con la mayor parte de la pantalla
+    const alto = page.viewportSize()!.height
+    const visor = (await page.locator('.visor').boundingBox())!
+    expect(visor.height / alto).toBeGreaterThan(0.65)
 
-    // acercar y alejar
-    const inicial = await zoom()
-    await page.locator('.visor-zoom button[aria-label="Acercar"]').click()
-    await expect.poll(zoom).toBeGreaterThan(inicial)
-    await page.getByRole('button', { name: 'Ver todo' }).click()
-    await expect.poll(zoom).toBeLessThan(inicial)
+    // en reposo no queda una capa de GPU fija: es lo que recortaba la hoja
+    // en iOS y la dejaba borrosa al escalar
+    expect(await page.locator('.visor-lienzo')
+      .evaluate((e) => getComputedStyle(e).willChange)).toBe('auto')
+  })
+
+  test('pellizcar con dos dedos acerca y aleja', async ({ page }) => {
+    await entrar(page, 'tomas')
+    await page.goto('/app/pacientes')
+    await page.getByText('Rojas, Mateo').first().click()
+    const nueva = page.getByRole('button', { name: '+ Nueva pesquisa' })
+    if (await nueva.count()) {
+      await nueva.click()
+      await page.getByRole('button', { name: 'Empezar' }).click()
+    } else {
+      await page.getByRole('link', { name: 'Continuar' }).first().click()
+    }
+    await expect(page).toHaveURL(/\/app\/evaluacion\//, { timeout: 15_000 })
+    await expect(page.locator('.visor')).toBeVisible({ timeout: 10_000 })
+
+    const escalaActual = () => page.locator('.visor-lienzo').evaluate((e) => {
+      const m = new DOMMatrix(getComputedStyle(e).transform)
+      return m.a
+    })
+
+    /** Simula un pellizco: dos punteros que se separan o se juntan. */
+    const pellizcar = (desde: number, hasta: number) =>
+      page.locator('.visor-marco').evaluate((el, [d, h]) => {
+        const c = el.getBoundingClientRect()
+        const cx = c.left + c.width / 2
+        const cy = c.top + c.height / 2
+        const ev = (t: string, id: number, x: number, y: number) =>
+          el.dispatchEvent(new PointerEvent(t, {
+            pointerId: id, clientX: x, clientY: y,
+            bubbles: true, cancelable: true, pointerType: 'touch',
+          }))
+        ev('pointerdown', 1, cx - d / 2, cy)
+        ev('pointerdown', 2, cx + d / 2, cy)
+        const pasos = 8
+        for (let i = 1; i <= pasos; i++) {
+          const s = d + ((h - d) * i) / pasos
+          ev('pointermove', 1, cx - s / 2, cy)
+          ev('pointermove', 2, cx + s / 2, cy)
+        }
+        ev('pointerup', 1, cx - h / 2, cy)
+        ev('pointerup', 2, cx + h / 2, cy)
+      }, [desde, hasta])
+
+    const inicial = await escalaActual()
+
+    await pellizcar(80, 240)   // separar los dedos → acercar
+    await expect.poll(escalaActual).toBeGreaterThan(inicial * 1.4)
+
+    const acercado = await escalaActual()
+    await pellizcar(240, 80)   // juntar los dedos → alejar
+    await expect.poll(escalaActual).toBeLessThan(acercado * 0.8)
+  })
+
+  test('arrastrar con un dedo recorre la ficha en los dos ejes', async ({ page }) => {
+    await entrar(page, 'tomas')
+    await page.goto('/app/pacientes')
+    await page.getByText('Rojas, Mateo').first().click()
+    const nueva = page.getByRole('button', { name: '+ Nueva pesquisa' })
+    if (await nueva.count()) {
+      await nueva.click()
+      await page.getByRole('button', { name: 'Empezar' }).click()
+    } else {
+      await page.getByRole('link', { name: 'Continuar' }).first().click()
+    }
+    await expect(page).toHaveURL(/\/app\/evaluacion\//, { timeout: 15_000 })
+    await expect(page.locator('.visor')).toBeVisible({ timeout: 10_000 })
+
+    const posicion = () => page.locator('.visor-lienzo').evaluate((e) => {
+      const m = new DOMMatrix(getComputedStyle(e).transform)
+      return { x: Math.round(m.e), y: Math.round(m.f) }
+    })
+
+    const antes = await posicion()
+    const marco = (await page.locator('.visor-marco').boundingBox())!
+    await page.mouse.move(marco.x + marco.width / 2, marco.y + marco.height / 2)
+    await page.mouse.down()
+    await page.mouse.move(marco.x + marco.width / 2 - 90, marco.y + marco.height / 2 - 70, { steps: 12 })
+    await page.mouse.up()
+
+    const despues = await posicion()
+    expect(despues.x, 'no se movió en horizontal').not.toBe(antes.x)
+    expect(despues.y, 'no se movió en vertical').not.toBe(antes.y)
   })
 
   test('tocar marca el ítem y arrastrar solo mueve la ficha', async ({ page }) => {

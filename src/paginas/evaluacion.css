@@ -158,15 +158,27 @@
 /* ── celular ─────────────────────────────────────────────────────────────── */
 
 @media (max-width: 900px) {
+  /* Cabecera de una sola fila: cada píxel que se ahorra acá es un píxel más
+     de ficha, que es lo que la terapeuta necesita ver. */
   .eval-barra {
-    padding: 7px 10px;
-    padding-top: calc(7px + env(safe-area-inset-top, 0px));
-    gap: 7px;
-    flex-wrap: wrap;
+    padding: 5px 8px;
+    padding-top: calc(5px + env(safe-area-inset-top, 0px));
+    gap: 6px;
+    flex-wrap: nowrap;
   }
-  .eval-titulo strong { font-size: 13.5px; }
-  .eval-titulo span { font-size: 11.5px; }
-  .eval-modo { order: 3; }
+  .eval-barra > a.btn { padding: 0 8px; }
+  .eval-titulo { flex: 1; min-width: 0; }
+  .eval-titulo strong {
+    font-size: 13px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .eval-titulo span {
+    font-size: 11px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .eval-barra .crece { display: none; }
+  .eval-modo { flex: none; padding: 2px; }
+  .eval-modo button { height: 30px; padding: 0 11px; font-size: 12.5px; }
   /* imprimir no es el caso de uso en celular; !important porque .btn declara
      su propio display con la misma especificidad */
   .eval-imprimir { display: none !important; }
@@ -183,20 +195,14 @@
     max-height: none;
     border-radius: var(--r) var(--r) 0 0;
     border-bottom: 0;
-    padding: 9px 12px calc(9px + env(safe-area-inset-bottom, 0px));
+    padding: 7px 10px calc(7px + env(safe-area-inset-bottom, 0px));
     box-shadow: 0 -2px 14px rgba(16, 24, 32, 0.12);
-    gap: 8px;
+    gap: 7px;
   }
-  .eval-panel.compacto .eval-cifras { gap: 6px; }
-  .eval-panel.compacto .eval-cifra { flex-direction: row; align-items: baseline;
-    justify-content: center; gap: 5px; padding: 6px 4px; }
-  .eval-panel.compacto .eval-cifra strong { font-size: 17px; }
-  .eval-panel.compacto .eval-cifra span { font-size: 10px; }
-  .eval-panel.compacto .eval-veredicto { padding: 7px 10px; font-size: 12.5px; }
-  .eval-panel.compacto .btn-grande { height: 46px; }
+  .eval-panel.compacto .btn-grande { height: 44px; }
 
   /* deja lugar para la barra compacta y la barra de pestañas del sistema */
-  .eval-cuerpo { padding-bottom: 212px; }
+  .eval-cuerpo { padding-bottom: 180px; }
   /* con el visor la ficha ocupa el alto disponible y no necesita ese relleno */
   .eval-cuerpo:has(.visor) { padding-bottom: 10px; }
 
@@ -220,3 +226,48 @@
   }
   @page { size: A4 portrait; margin: 6mm; }
 }
+
+
+/* ── resumen en una fila (celular) ───────────────────────────────────────── */
+
+.eval-resumen-fila {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--texto-2);
+}
+.eval-mini {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+  padding: 3px 8px;
+  border-radius: var(--r-sm);
+  background: var(--superficie-2);
+  border: 1px solid var(--borde);
+  white-space: nowrap;
+}
+.eval-mini b { font-size: 15px; font-variant-numeric: tabular-nums; color: var(--texto); }
+.eval-mini.mal b { color: var(--error); }
+
+.eval-punto {
+  margin-left: auto;
+  padding: 3px 9px;
+  border-radius: 99px;
+  font-size: 11.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  background: #eef1f3;
+  color: var(--texto-2);
+}
+.eval-punto.pasa { background: var(--ok-suave); color: var(--ok); }
+.eval-punto.derivar { background: var(--error-suave); color: var(--error); }
+
+/* punto de estado del guardado, en vez de una insignia con texto */
+.eval-punto-guardado {
+  width: 9px; height: 9px; border-radius: 50%; flex: none;
+  background: var(--texto-3);
+}
+.eval-punto-guardado.ok { background: var(--ok); }
+.eval-punto-guardado.alerta { background: var(--alerta); }
+.eval-punto-guardado.error { background: var(--error); }

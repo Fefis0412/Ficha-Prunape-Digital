@@ -26,6 +26,15 @@
   top: 0;
   left: 0;
   transform-origin: 0 0;
+}
+
+/* will-change sólo mientras dura el gesto.
+   Dejarlo fijo obliga al navegador a mantener la hoja entera (3799 x 4925 px)
+   en una capa de GPU: iOS no puede con una capa de ese tamaño, descarta
+   pedazos —por eso la ficha salía cortada— y al escalar estira la imagen
+   vieja en vez de redibujarla, que es el efecto borroso. Al soltar se quita
+   y el navegador la vuelve a dibujar nítida. */
+.visor-lienzo.en-gesto {
   will-change: transform;
 }
 
@@ -114,10 +123,9 @@
    resumen fijo, y la ficha aprovecha todo el ancho. */
 @media (max-width: 900px) {
   .visor { border-radius: var(--r); }
-  .visor-mandos { left: 8px; right: 8px; bottom: 8px; justify-content: space-between; gap: 6px; }
-  .visor-btn { height: 42px; padding: 0 13px; font-size: 12.5px; }
-  .visor-zoom { height: 42px; }
-  .visor-zoom button { width: 44px; }
+  /* los dos atajos van juntos abajo a la derecha, sin robarle ancho a la ficha */
+  .visor-mandos { left: auto; right: 8px; bottom: 8px; gap: 6px; }
+  .visor-btn { height: 38px; padding: 0 12px; font-size: 12.5px; }
 }
 
 @media print {
