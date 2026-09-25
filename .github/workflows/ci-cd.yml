@@ -1,0 +1,114 @@
+name: CI/CD
+
+# Cada push a main: verifica, aplica las migraciones pendientes a Supabase y
+# despliega en Cloudflare Pages (producción).
+# Cada pull request: verifica y publica una vista previa en Cloudflare Pages,
+# sin tocar la base.
+#
+# Secretos que hay que cargar en Settings → Secrets → Actions:
+#   VITE_SUPABASE_URL        https://PROYECTO.supabase.co
+#   VITE_SUPABASE_ANON_KEY   clave anon (pública) del proyecto
+#   SUPABASE_DB_URL          postgresql://postgres.PROYECTO:CLAVE@HOST:5432/postgres
+#   CLOUDFLARE_API_TOKEN     token con permiso Cloudflare Pages → Edit
+#   CLOUDFLARE_ACCOUNT_ID    ID de la cuenta de Cloudflare
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-cd-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PROYECTO_PAGES: prunape-digital
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+
+      - name: Compilar
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+        run: npm run build
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+          retention-days: 7
+
+  migrar:
+    # Solo producción: las vistas previas comparten la misma base y no deben
+    # aplicar migraciones que todavía no se aprobaron.
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: verificar
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Aplicar migraciones pendientes
+        env:
+          PGURL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          if [ -z "$PGURL" ]; then
+            echo "Falta el secreto SUPABASE_DB_URL" >&2
+            exit 1
+          fi
+          supabase db push --db-url "$PGURL"
+
+  desplegar:
+    needs: [verificar, migrar]
+    # migrar se saltea en los pull requests; eso no debe frenar la vista previa.
+    if: |
+      always() &&
+      needs.verificar.result == 'success' &&
+      (needs.migrar.result == 'success' || needs.migrar.result == 'skipped')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      deployments: write
+      pull-requests: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Desplegar en Cloudflare Pages
+        id: despliegue
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: >-
+            pages deploy dist
+            --project-name=${{ env.PROYECTO_PAGES }}
+            --branch=${{ github.head_ref || github.ref_name }}
+            --commit-hash=${{ github.sha }}
+
+      - name: Resumen
+        run: |
+          echo "### Desplegado" >> $GITHUB_STEP_SUMMARY
+          echo "${{ steps.despliegue.outputs.deployment-url }}" >> $GITHUB_STEP_SUMMARY
